@@ -2,13 +2,15 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse, HttpErrorResponse, HttpEvent } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../model/user';
-import { CustomHttpResponse, CustomHttpResponse } from '../model/custom-http-response';
 import { environment } from 'src/environments/environment';
-Injectable({ providedIn: 'root' })
-export class UserService {
-  private host = environment.apiUrl;
+import { CustomHttpResponse } from '../model/custom-http-response';
 
-  constructor(private http: HttpClient) { }
+
+@Injectable({ providedIn: 'root' })
+export class UserService {
+  public host = environment.apiUrl;
+
+  constructor(public http: HttpClient) { }
 
   public getUsers(): Observable<User[]> {
     return this.http.get<User[]>(`${this.host}/user/list`);
