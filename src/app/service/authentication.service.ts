@@ -7,12 +7,10 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
-  public host = environment.apiUrl;
+
   private token: any;
-  private loggedInUsername: any;
+  public host = environment.apiUrl;
   private jwtHelper = new JwtHelperService();
-
-
   constructor(private http: HttpClient) { }
 
   public login(user: User): Observable<HttpResponse<User>> {
@@ -25,7 +23,6 @@ export class AuthenticationService {
 
   public logOut(): void {
     this.token = null;
-    this.loggedInUsername = null;
     localStorage.removeItem('user');
     localStorage.removeItem('token');
     localStorage.removeItem('users');
@@ -41,9 +38,9 @@ export class AuthenticationService {
     localStorage.setItem('user', JSON.stringify(user));
   }
 
-  /*public getUserFromLocalCache(): User {
-    return JSON.parse(localStorage.getItem('user'));
-  }*/
+  getUserFromLocalCache(): User {
+    return JSON.parse(localStorage.getItem('user')!);
+  }
 
   public loadToken(): void {
     this.token = localStorage.getItem('token');
@@ -54,12 +51,11 @@ export class AuthenticationService {
   }
 
 
-  public isUserLoggedIn(): boolean {
+  isUserLoggedIn(): boolean {
     this.loadToken();
     if (this.token != null && this.token !== '') {
-      if (this.jwtHelper.decodeToken(this.token).sub != null || '') {
+      if (this.jwtHelper.decodeToken(this.token).sub != null && this.jwtHelper.decodeToken(this.token).sub != '') {
         if (!this.jwtHelper.isTokenExpired(this.token)) {
-          this.loggedInUsername = this.jwtHelper.decodeToken(this.token).sub;
           return true;
         }
       }
@@ -67,8 +63,6 @@ export class AuthenticationService {
     this.logOut();
     return false;
   }
-
-
 
 
 }

@@ -44,12 +44,9 @@ export class UserService {
     localStorage.setItem('users', JSON.stringify(users));
   }
 
-  /* public getUsersFromLocalCache(): User[] {
-     if (localStorage.getItem('users')) {
-         return JSON.parse(localStorage.getItem('users'));
-     }
-     return null;
-   }*/
+  getUsersFromLocalCache(): User[] | null {
+    return localStorage.getItem('users') ? JSON.parse(localStorage.getItem('users')!) : null;
+  }
 
   public createUserFormDate(loggedInUsername: string, user: User, profileImage: File): FormData {
     const formData = new FormData();

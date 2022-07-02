@@ -1,1 +1,47 @@
-<p>login works!</p>
+<br><br><br><br>
+<div class="container">
+  <div class="d-flex justify-content-center h-50">
+      <div class="user_card">
+          <div class="d-flex justify-content-center">
+            <div class="text-center">
+              <h2>Simplon</h2>
+            </div>
+          </div>
+          <div class="d-flex justify-content-center form_container mt-10">
+              <form #loginForm="ngForm" (ngSubmit)="onLogin(loginForm.value)">
+                  <div class="input-group mb-3">
+                      <div class="input-group-append">
+                          <span class="input-group-text"><i class="fas fa-user"></i></span>
+                      </div>
+                      <input type="text" ngModel class="form-control" name="username" placeholder="Username"
+                      #usernameInput="ngModel" ngModel required>
+                  </div>
+                  <span class="help-block text-danger" *ngIf="usernameInput.invalid && usernameInput.touched" >
+                      Entrer votre nom d'utilisateur s'il vous plait !
+                  </span>
+                  <div class="input-group mb-2">
+                      <div class="input-group-append">
+                          <span class="input-group-text"><i class="fas fa-key"></i></span>
+                      </div>
+                      <input  #passwordInput="ngModel" ngModel type="password" class="form-control" name="password" placeholder="Password" required>
+                  </div>
+                  <span class="help-block text-danger" *ngIf="passwordInput.invalid && passwordInput.touched">
+                     Entrer votre mot de passe s'il vous plait
+                  </span>
+                  <div class="d-flex justify-content-center mt-3 login_container">
+                      <button type="submit" [disabled]="loginForm.invalid || showLoading" name="button" class="btn login_btn" >
+                          <i *ngIf="showLoading" class="fas fa-spinner fa-spin" ></i>&nbsp;&nbsp;
+                          <span *ngIf="showLoading">En chargement...</span>
+                          <span *ngIf="!showLoading">Se Connecter</span>
+                      </button>
+                  </div>
+              </form>
+          </div>
+          <div class="mt-4">
+              <div class="d-flex justify-content-center links">
+                  Don't have an account? <a routerLink="/register" class="ml-2 color-link">Sign Up</a>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
