@@ -38,8 +38,8 @@
         <div class="tab-pane fade show active" id="users">
           <div class="mb-3 float-right">
             <div class="btn-group mr-2">
-              <form class="form-inline my-2 my-lg-0 justify-content-center">
-                <input name="searchTerm" 
+              <form #searchForm="ngForm" class="form-inline my-2 my-lg-0 justify-content-center">
+                <input ngModel name="searchTerm" class="form-control mr-sm-2" (ngModelChange)="searchUsers(searchForm.value.searchTerm)"
                 type="search" placeholder="Search users...">
              </form>
               <button  type="button" class="btn btn-info" data-toggle="modal" data-target="#addUserModal">
@@ -159,12 +159,12 @@
                       <span [hidden]="!selectedUser?.isNotLocked"> 
                         <i class="fa fa-lock float-right" style="color: red;">
                         </i>
-                        Account Locked
+                        Compte bloqué
                       </span>
                       <span [hidden]="selectedUser?.isNotLocked">
                         <i class="fa fa-unlock float-right" style="color: green;">
                         </i>
-                        Account Unlocked
+                        Compte Activé
                       </span>
                     </li>
                   </ul>

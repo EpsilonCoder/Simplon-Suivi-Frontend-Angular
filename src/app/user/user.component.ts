@@ -20,7 +20,7 @@ export class UserComponent implements OnInit {
   public titleAction$ = this.titleSubject.asObservable();
 
 
-  public users: User[] | undefined;
+  public users!: User[];
   public refreshing: boolean | undefined;
   private subcriptions: Subscription[] = [];
   selectedUser: User | undefined;
@@ -115,6 +115,25 @@ export class UserComponent implements OnInit {
 
   clickButton(buttonId: string): void {
     document.getElementById(buttonId)?.click();
+  }
+
+  public searchUsers(searchTerm: string): void {
+    console.log(searchTerm);
+    const results: User[] = [];
+    for (const user of this.userService.getUsersFromLocalCache() || []) {
+      if (user.firstName.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1 ||
+        user.lastName.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1 ||
+        user.username.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1 ||
+        user.userId.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1) {
+        results.push(user);
+      }
+    }
+    this.users = results;
+    if (results.length == 0 || !searchTerm) {
+      this.users = this.userService.getUsersFromLocalCache() || [];
+
+    }
+
   }
 
 }
