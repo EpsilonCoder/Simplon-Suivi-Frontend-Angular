@@ -7,10 +7,10 @@ export class User {
     public email: string;
     public lastLoginDate: Date | undefined;
     public lastLoginDateDisplay: Date | undefined;
-    public joinDate!: Date;
+    public joinDate: Date | undefined;
     public profileImageUrl: string;
     public active: boolean;
-    public notLocked: boolean;
+    public isNotLocked: boolean;
     public role: string;
     public authorities: [];
 
@@ -22,7 +22,7 @@ export class User {
         this.email = '';
         this.profileImageUrl = '';
         this.active = false;
-        this.notLocked = false;
+        this.isNotLocked = false;
         this.role = '';
         this.authorities = [];
     }

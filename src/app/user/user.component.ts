@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { NotificationType } from '../enum/notification-type.enum';
@@ -23,6 +24,8 @@ export class UserComponent implements OnInit {
   public refreshing: boolean | undefined;
   private subcriptions: Subscription[] = [];
   selectedUser: User | undefined;
+  fileName!: string;
+  profileImage: File | undefined;
 
 
   constructor(private router: Router, private userService: UserService, private authenticationService: AuthenticationService,
@@ -76,6 +79,42 @@ export class UserComponent implements OnInit {
     this.selectedUser = selectedUser;
     document.getElementById('openUserInfo')?.click();
 
+  }
+
+
+  onProfileImageChange(event: Event): void {
+    const target = (event.target as HTMLInputElement);
+    this.fileName = target.files![0].name;
+    this.profileImage = target.files![0];
+  }
+
+
+  saveNewUser() {
+    this.clickButton('new-user-save');
+  }
+
+  onAddNewUser(userForm: NgForm): void {
+    const formData: FormData = this.userService.createUserFormDate('', userForm.value, this.profileImage!);
+    const userSaveSubscription = this.userService.addUser(formData)
+      .subscribe({
+        next: (user: User) => {
+          this.clickButton('new-user-close');
+          this.getUsers(false);
+          this.fileName = '';
+          this.profileImage != null;
+          userForm.reset();
+          userForm.form.controls['role'].setValue('ROLE_USER');
+          this.sendNotification(NotificationType.SUCCESS, `${user.firstName} ${user.lastName} a bien été ajouté`);
+        },
+        error: (err: HttpErrorResponse) => {
+          this.sendNotification(NotificationType.ERROR, err.error.message);
+          this.profileImage != null;
+        }
+      });
+  }
+
+  clickButton(buttonId: string): void {
+    document.getElementById(buttonId)?.click();
   }
 
 }
