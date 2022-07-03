@@ -48,7 +48,7 @@ export class UserService {
     return localStorage.getItem('users') ? JSON.parse(localStorage.getItem('users')!) : null;
   }
 
-  public createUserFormDate(loggedInUsername: string, user: User, profileImage: File): FormData {
+  createUserFromData(loggedInUsername: string, user: User, profileImage: File): FormData {
     const formData = new FormData();
     formData.append('currentUsername', loggedInUsername);
     formData.append('firstName', user.firstName);

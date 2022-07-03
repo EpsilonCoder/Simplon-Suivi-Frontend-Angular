@@ -94,7 +94,7 @@ export class UserComponent implements OnInit {
   }
 
   onAddNewUser(userForm: NgForm): void {
-    const formData: FormData = this.userService.createUserFormDate('', userForm.value, this.profileImage!);
+    const formData: FormData = this.userService.createUserFromData("", userForm.value, this.profileImage!);
     const userSaveSubscription = this.userService.addUser(formData)
       .subscribe({
         next: (user: User) => {
@@ -133,7 +133,5 @@ export class UserComponent implements OnInit {
       this.users = this.userService.getUsersFromLocalCache() || [];
 
     }
-
   }
-
 }

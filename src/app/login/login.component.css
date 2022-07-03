@@ -11,7 +11,7 @@ html {
     width: 600px;
     margin-top: auto;
     margin-bottom: auto;
-    background: #d3d4d4;
+    background: linear-gradient(red, red, white, white, white, red);
     position: relative;
     display: flex;
     justify-content: center;
@@ -48,7 +48,7 @@ html {
 
 .login_btn {
     width: 100%;
-    background: #1B4F72 !important;
+    background: black !important;
     color: white !important;
 }
 
@@ -62,7 +62,7 @@ html {
 }
 
 .input-group-text {
-    background: #1B4F72 !important;
+    background: black !important;
     color: white !important;
     border: 0 !important;
     border-radius: 0.25rem 0 0 0.25rem !important;
