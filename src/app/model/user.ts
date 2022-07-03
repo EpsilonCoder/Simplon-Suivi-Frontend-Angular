@@ -5,6 +5,9 @@ export class User {
     public lastName: string;
     public username: string;
     public email: string;
+    public lastLoginDate: Date | undefined;
+    public lastLoginDateDisplay: Date | undefined;
+    public joinDate!: Date;
     public profileImageUrl: string;
     public active: boolean;
     public notLocked: boolean;

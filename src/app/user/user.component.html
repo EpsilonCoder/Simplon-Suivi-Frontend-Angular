@@ -1,1 +1,181 @@
-<p>user works!</p>
+<div class="container">
+    <div class="row mb-2 mt-2 text-center">
+      <div class="col-md-4">
+      </div>
+      <div class="col-md-4">
+        <h5>Simplon Sénégal</h5>
+        <small *ngIf="titleAction$ | async as title">{{title}}</small>
+      </div>
+      <div class="col-md-4">
+      </div>
+    </div>
+   
+    <!-- nav bar -->
+    <nav class="navbar navbar-expand-md breadcrumb">
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <div class="nav nav-pills">
+          <a class="nav-item nav-link active ml-1" (click)="changeTitle('Utilisateur')" data-toggle="tab">
+            <i class="fa fa-users"></i>
+            Users
+          </a>
+          <a  class="nav-item nav-link ml-3" (click)="changeTitle('Parametre')"  data-toggle="tab" >
+            <i class="fa fa-cogs"></i>
+            Settings
+          </a>
+          <a  class="nav-item nav-link move-right mr-3" data-toggle="tab" (click)="changeTitle('Profile')">
+            Bienvenue Epsilon
+            <i class="fa fa-user"></i>
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <!--
+        la liste de nos utilisateurs 
+    -->
+    <div class="tab-content mt-3" id="myTabContent">
+        <!-- user table -->
+        <div class="tab-pane fade show active" id="users">
+          <div class="mb-3 float-right">
+            <div class="btn-group mr-2">
+              <form class="form-inline my-2 my-lg-0 justify-content-center">
+                <input name="searchTerm" 
+                type="search" placeholder="Search users...">
+             </form>
+              <button  type="button" class="btn btn-info" data-toggle="modal" data-target="#addUserModal">
+                <i class="fa fa-plus"></i>New User
+              </button>
+            </div>
+            <div class="btn-group">
+              <button type="button" (click)="getUsers(true)"  class="btn btn-info">
+                <i *ngIf="refreshing"  class="fas fa-sync fa-spin"></i><i  class="fas fa-sync"></i>
+              </button>
+            </div>
+          </div>
+          <table class="table table-hover">
+            <thead class="table-borderless">
+              <tr class="text-center">
+                <th>Photo</th>
+                <th>Identifiant</th>
+                <th>Prénom</th>
+                <th>Nom</th>
+                <th>Nom d'utilisateur</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let epsilon of users">
+              <tr class="text-center" (click)="onSelectUser(epsilon)">
+                <td >
+                  <img height="40" width="40" src="{{epsilon?.profileImageUrl}}" class="rounded-circle img-fluid img-thumbnail" alt=""/>
+                </td>
+                <td >{{epsilon?.userId}}</td>
+                <td >{{epsilon?.firstName}}</td>
+                <td >{{epsilon?.lastName}}</td>
+                <td >{{epsilon?.username}}</td>
+                <td >{{epsilon?.email}}</td>
+                <td >
+                  <span [hidden]="!epsilon?.active" class="badge badge-success">Active</span>
+                  <span [hidden]="epsilon?.active" class="badge badge-danger">Inactive</span>
+                </td>
+                <td class="">
+                  <div class="btn-group">
+                    <button class="btn btn-outline-info" ><i class="fas fa-edit"></i></button>
+                    <button  class="btn btn-outline-danger"><i class="fas fa-trash"></i></button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+
+        <button type="button" id="openUserInfo" data-toggle="modal" data-target="#viewUserModal">
+        </button>
+        <button type="button" id="openUserEdit" data-toggle="modal" data-target="#editUserModal">
+        </button>
+    
+
+        <!--Les information s'affichant sous forme de popup modal-->
+
+        <div class="modal fade bd-example-modal-lg" id="viewUserModal" tabindex="-1" role="dialog" aria-labelledby=""
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title text-center" id="exampleModalLongTitle">
+              </h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div>
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-12 col-sm-auto">
+                        <div class="mx-auto" style="width: 120px;">
+                          <div class="d-flex justify-content-center align-items-center rounded">
+                            <img class="rounded" height="120" width="120" src="{{selectedUser?.profileImageUrl}}" alt="{{selectedUser?.firstName}}">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col d-flex flex-column flex-sm-row justify-content-between">
+                        <div class="text-center text-sm-left mb-sm-0">
+                          <h6 class="pt-sm-2 pb-1 mb-0 text-nowrap">{{selectedUser?.firstName}}
+                            {{selectedUser?.lastName}}
+                            </h6>
+                          <p class="mb-1"></p>
+                          <div class="">Status:
+                            <span [hidden]="!selectedUser?.active"  class="badge badge-success">Active</span>
+                            <span [hidden]="selectedUser?.active"  class="badge badge-danger">Inactive</span>
+                          </div>
+                          <div  class="text-muted"><small>Dernière connexion:<br>{{ selectedUser?.lastLoginDate | date:'medium'}} </small>
+                          </div>
+                        </div>
+                        <div class="text-center text-sm-right">
+                          <div class="text-muted"><small> A joint la Simplon-Suivi :<br>{{ selectedUser?.joinDate | date:'medium'}} </small></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item"></li>
+                    <li class="list-group-item"><i class="fa fa-id-badge float-right"></i>
+                        {{ selectedUser?.userId}}
+                    </li>
+                    <li class="list-group-item"><i class="fa fa-envelope float-right"></i>
+                        {{ selectedUser?.email}}
+                    </li>
+                    <li class="list-group-item"><i class="fas fa-shield-alt float-right"></i>
+                        {{ selectedUser?.role?.substring(5)}}
+                    </li>
+                    <li *ngIf="selectedUser?.lastLoginDateDisplay" class="list-group-item"><i class="fas fa-sign-in-alt float-right"></i>
+                        {{ selectedUser?.lastLoginDateDisplay | date:'medium'}}
+                    </li>
+                    <li class="list-group-item">
+                      <span [hidden]="!selectedUser?.notLocked"> 
+                        <i class="fa fa-lock float-right" style="color: red;">
+                        </i>
+                        Account Locked
+                      </span>
+                      <span [hidden]="selectedUser?.notLocked">
+                        <i class="fa fa-unlock float-right" style="color: green;">
+                        </i>
+                        Account Unlocked
+                      </span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+  
