@@ -10,6 +10,8 @@ import { RegisterComponent } from './register/register.component';
 import { UserComponent } from './user/user.component';
 import { AuthInterceptor } from './interceptor/auth.interceptor';
 import { NotificationModule } from './notification.module';
+import { HeaderComponent } from './header/header.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +19,8 @@ import { NotificationModule } from './notification.module';
     LoginComponent,
     RegisterComponent,
     UserComponent,
+    HeaderComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
