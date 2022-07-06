@@ -1,10 +1,11 @@
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpEvent, HttpEventType } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { NotificationType } from '../enum/notification-type.enum';
 import { CustomHttpResponse } from '../model/custom-http-response';
+import { FileuploadStatus } from '../model/file-upload.status';
 import { User } from '../model/user';
 import { AuthenticationService } from '../service/authentication.service';
 import { NotificationService } from '../service/notification.service';
@@ -29,6 +30,7 @@ export class UserComponent implements OnInit {
   public profileImage!: File | any;
   public editUser = new User();
   private currentUsername!: string;
+  public fileStatus = new FileuploadStatus();
 
   constructor(private router: Router, private userService: UserService, private authenticationService: AuthenticationService,
     private notificationService: NotificationService) { }
@@ -227,4 +229,50 @@ export class UserComponent implements OnInit {
     );
 
   }
+
+  public updateProfileImage(): void {
+    this.clickButton('profile-image-input');
+  }
+
+  onUpdateProfileImage(): void {
+    const formData = new FormData();
+    formData.append('username', this.user.username);
+    formData.append('profileImage', this.profileImage!);
+    const updateProfileImageSubscription = this.userService.updateProfileImage(formData)
+      .subscribe({
+        next: (event: HttpEvent<any>) => {
+          this.reportUploadProgress(event);
+        },
+        error: (err: HttpErrorResponse) => {
+          this.sendNotification(NotificationType.ERROR, err.error.message);
+          this.fileStatus.status = 'done';
+        }
+      });
+
+    this.subcriptions.push(updateProfileImageSubscription);
+  }
+
+  private reportUploadProgress(event: HttpEvent<any>): void {
+    switch (event.type) {
+      case HttpEventType.UploadProgress:
+        this.fileStatus.percentage = Math.round(event.loaded / event.total! * 100);
+        this.fileStatus.status = 'chargement';
+        break;
+      case HttpEventType.Response:
+        if (event.status === 200) {
+          console.log('User: ', event.body);
+          //pour le changement automatique de l image sans recharger la pge
+          this.user.profileImageUrl = `${event.body.profileImageUrl}?time=${new Date().getTime()}`;
+          this.sendNotification(NotificationType.SUCCESS, `${event.body.firstName} votre photo de profile a bien été mis a jour`);
+          this.fileStatus.status = 'Terminé';
+        } else {
+          this.sendNotification(NotificationType.ERROR, `Impossible de charger l 'image , veuillez réessayer s'il vous plait`);
+        }
+        break;
+      default:
+        console.log(`Terminé`);
+        break;
+    }
+  }
+
 }
