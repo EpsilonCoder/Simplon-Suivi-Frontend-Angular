@@ -20,7 +20,7 @@ export class UserComponent implements OnInit {
   private titleSubject = new BehaviorSubject<string>('Profile');
   public titleAction$ = this.titleSubject.asObservable();
 
-
+  public user!: User;
   public users!: User[];
   public refreshing: boolean | undefined;
   private subcriptions: Subscription[] = [];
@@ -39,7 +39,7 @@ export class UserComponent implements OnInit {
     } else {
       this.router.navigateByUrl('/login');
     }
-
+    this.user = this.authenticationService.getUserFromLocalCache();
     this.getUsers(true);
   }
 
@@ -181,7 +181,7 @@ export class UserComponent implements OnInit {
 
   public onResetPassword(emailForm: NgForm): void {
 
-    this.refreshing = false;
+    this.refreshing = true;
     const emailAddress = emailForm.value['reset-password-email'];
     this.subcriptions.push(
       this.userService.resetPassword(emailAddress).subscribe(
@@ -193,11 +193,38 @@ export class UserComponent implements OnInit {
         (error: HttpErrorResponse) => {
           this.sendNotification(NotificationType.INFO, error.error.message);
           emailForm.resetForm();
+          this.refreshing = true;
         },
 
       )
     )
   }
+  onLogOut(): void {
+    this.authenticationService.logOut();
+    this.router.navigate(['/login']);
+    this.sendNotification(NotificationType.SUCCESS, `A plutard !! Merci d'avoir été sur Simplon Suivi`);
+  }
 
+  public onUpdateCurrentUser(user: User): void {
+    this.refreshing = true;
+    this.currentUsername = this.authenticationService.getUserFromLocalCache().username;
+    const formData: FormData = this.userService.createUserFromData(this.currentUsername, user, this.profileImage!);
+    this.subcriptions.push(
+      this.userService.updateUser(formData).subscribe(
+        (response: User) => {
+          this.authenticationService.addUserToLocalCache(response);
+          this.getUsers(false);
+          this.fileName = '';
+          this.profileImage = null;
+          this.sendNotification(NotificationType.SUCCESS, `${response.firstName} ${response.lastName} La mise a jour a été effectué avec succés`);
+        },
+        (errorResponse: HttpErrorResponse) => {
+          this.sendNotification(NotificationType.ERROR, errorResponse.error.message);
+          this.refreshing = false;
+          this.profileImage = null;
+        }
+      )
+    );
 
+  }
 }
