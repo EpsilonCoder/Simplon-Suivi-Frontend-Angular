@@ -1,9 +1,11 @@
 import { HttpErrorResponse, HttpEvent, HttpEventType } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Subscription } from 'rxjs';
+import { SubSink } from 'subsink';
 import { NotificationType } from '../enum/notification-type.enum';
+import { Role } from '../enum/role.enum';
 import { CustomHttpResponse } from '../model/custom-http-response';
 import { FileuploadStatus } from '../model/file-upload.status';
 import { User } from '../model/user';
@@ -16,8 +18,8 @@ import { UserService } from '../service/user.service';
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.css']
 })
-export class UserComponent implements OnInit {
-
+export class UserComponent implements OnInit, OnDestroy {
+  private subs = new SubSink();
   private titleSubject = new BehaviorSubject<string>('Profile');
   public titleAction$ = this.titleSubject.asObservable();
 
@@ -99,22 +101,23 @@ export class UserComponent implements OnInit {
 
   onAddNewUser(userForm: NgForm): void {
     const formData: FormData = this.userService.createUserFromData('', userForm.value, this.profileImage!);
-    const userSaveSubscription = this.userService.addUser(formData)
-      .subscribe({
-        next: (user: User) => {
-          this.clickButton('new-user-close');
-          this.getUsers(false);
-          this.fileName = '';
-          this.profileImage != null;
-          userForm.reset();
-          userForm.form.controls['role'].setValue('ROLE_USER');
-          this.sendNotification(NotificationType.SUCCESS, `${user.firstName} ${user.lastName} a bien été ajouté`);
-        },
-        error: (err: HttpErrorResponse) => {
-          this.sendNotification(NotificationType.ERROR, err.error.message);
-          this.profileImage != null;
-        }
-      });
+    this.subs.add(
+      this.userService.addUser(formData)
+        .subscribe({
+          next: (user: User) => {
+            this.clickButton('new-user-close');
+            this.getUsers(false);
+            this.fileName = '';
+            this.profileImage != null;
+            userForm.reset();
+            userForm.form.controls['role'].setValue('ROLE_USER');
+            this.sendNotification(NotificationType.SUCCESS, `${user.firstName} ${user.lastName} a bien été ajouté`);
+          },
+          error: (err: HttpErrorResponse) => {
+            this.sendNotification(NotificationType.ERROR, err.error.message);
+            this.profileImage != null;
+          }
+        }));
   }
 
   clickButton(buttonId: string): void {
@@ -186,6 +189,7 @@ export class UserComponent implements OnInit {
     this.refreshing = true;
     const emailAddress = emailForm.value['reset-password-email'];
     this.subcriptions.push(
+
       this.userService.resetPassword(emailAddress).subscribe(
         (response: CustomHttpResponse) => {
           this.sendNotification(NotificationType.SUCCESS, 'Le mot de passe de l utilisateur a bien été mis a jour');
@@ -273,6 +277,27 @@ export class UserComponent implements OnInit {
         console.log(`Terminé`);
         break;
     }
+  }
+
+  private getUserRole(): string {
+    return this.authenticationService.getUserFromLocalCache().role;
+  }
+
+  public get isAdmin(): boolean {
+    return this.getUserRole() === Role.ADMIN || this.getUserRole() === Role.SUPER_ADMIN;
+  }
+
+  public get isManager(): boolean {
+    return this.isAdmin || this.getUserRole() === Role.MANAGER;
+  }
+
+  public get isAdminOrManager(): boolean {
+    return this.isAdmin || this.isManager;
+  }
+
+
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
   }
 
 }

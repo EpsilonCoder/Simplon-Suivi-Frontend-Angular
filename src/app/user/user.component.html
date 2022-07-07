@@ -36,7 +36,7 @@
 
     <!--la liste de nos utilisateurs -->
     <!-- nav bar -->
-<nav class="navbar navbar-expand-md breadcrumb text-white bg-dark">
+<nav class="navbar navbar-expand-md breadcrumb text-white bg-dark" [hidden]="!isAdmin">
   <div class="collapse navbar-collapse" id="navbarCollapse">
     <div class="nav nav-pills">
       <a class="nav-item nav-link  active ml-1"  style="color:white;" data-toggle="tab" href="#users">
@@ -56,7 +56,7 @@
 </nav>
 
 
-    <div class="tab-content mt-3" id="myTabContent">
+    <div class="tab-content mt-3" id="myTabContent" >
         <!-- user table -->
         <div class="tab-pane fade show active" id="users">
           <div class="mb-3 float-right">
@@ -75,7 +75,7 @@
               </button>
             </div>
           </div>
-          <table class="table table-hover" style="border:2px dashed black;">
+          <table class="table table-hover" style="border:2px dashed black;" >
             <thead class="table-borderless">
               <tr class="text-center">
                 <th>Detail</th>
@@ -85,8 +85,8 @@
                 <th>Nom</th>
                 <th>Nom d'utilisateur</th>
                 <th>Email</th>
-                <th>Status</th>
-                <th>Actions</th>
+                <th [hidden]="!isAdmin">Status</th>
+                <th [hidden]="!isAdmin">Actions</th>
               </tr>
             </thead>
             <tbody *ngFor="let epsilon of users">
@@ -104,13 +104,13 @@
                 <td >{{epsilon?.lastName}}</td>
                 <td >{{epsilon?.username}}</td>
                 <td >{{epsilon?.email}}</td>
-                <td >
-                  <span [hidden]="!epsilon?.active" class="badge badge-success">Active</span>
+                <td [hidden]="!isAdmin">
+                  <span [hidden]="!isAdmin" [hidden]="!epsilon?.active" class="badge badge-success">Active</span>
                   <span [hidden]="epsilon?.active" class="badge badge-danger">Inactive</span>
                 </td>
-                <td class="">
+                <td class="" >
                   <div class="btn-group">
-                    <button class="btn btn-outline-dark" (click)="onEditUser(epsilon)"><i class="fas fa-edit"></i></button>
+                    <button  class="btn btn-outline-dark" (click)="onEditUser(epsilon)"><i class="fas fa-edit"></i></button>
                     <button type="button" class="btn btn-outline-danger"
                     aria-label="Delete user" (click)="onDeleteUser(epsilon)">
                     <i class="fas fa-trash"></i>
@@ -228,13 +228,13 @@
                               <div class="row">
                                 <div class="col mb-3">
                                   <div class="form-group">
-                                    <label>Votre role</label><small >(read only)</small>
+                                    <label>Permission</label><small>(Lecture seulement)</small>
                                     <select name="role" required [(ngModel)]="user.role"  class="form-control">
                                         <option  value="ROLE_USER">Apprenant</option>
-                                        <option  value="ROLE_HR"></option>
-                                        <option  value="ROLE_MANAGER">Formateur</option>
-                                        <option  value="ROLE_ADMIN">Administrateur</option>
-                                        <option  value="ROLE_SUPER_ADMIN">Super Adiminstrateur</option>
+                                        <option [hidden]="!isAdmin" value="ROLE_HR"></option>
+                                        <option [hidden]="!isAdmin" value="ROLE_MANAGER">Formateur</option>
+                                        <option [hidden]="!isAdmin" value="ROLE_ADMIN">Administrateur</option>
+                                        <option [hidden]="!isAdmin" value="ROLE_SUPER_ADMIN">Super Adiminstrateur</option>
                                       </select>
                                   </div>
                                 </div>
@@ -242,7 +242,7 @@
                             </div>
                           </div>
                           <div class="row">
-                            <div class="col-12 col-sm-5 offset-sm-1 mb-3">
+                            <div class="col-12 col-sm-5 offset-sm-1 mb-3" [hidden]="!isAdmin">
                               <div class="mb-2"><b>Parametre compte</b></div>
                               <div class="row">
                                 <div class="col">
@@ -308,7 +308,7 @@
         </button>
 
         <!-- Changer de mot de passe  -->
-    <div  class="tab-pane fade" id="reset-password">
+    <div  class="tab-pane fade" id="reset-password" [hidden]="!isAdmin">
         <form #resetPasswordForm="ngForm" (ngSubmit)="onResetPassword(resetPasswordForm)">
           <fieldset>
             <legend>Gestion mot de passe des utilisateurs</legend>
@@ -425,7 +425,7 @@
               <form #newUserForm="ngForm" (ngSubmit)="onAddNewUser(newUserForm)">
                 <div class="form-group">
                   <label for="firstName">Prénom</label>
-                  <input type="text" name="firstName" required ngModel class="form-control">
+                  <input type="text"  name="firstName" required ngModel class="form-control">
                 </div>
 
                 <div class="form-group">
@@ -441,11 +441,11 @@
                   <label for="email">Email</label>
                   <input type="email" name="email" required ngModel class="form-control">
                 </div>
-                <div class="form-group">
+                <div class="form-group" [hidden]="!isAdmin">
                   <label for="authority">Role</label>
                   <select name="role" required ngModel="ROLE_USER" class="form-control">
                     <option value="ROLE_USER">Utilisateur</option>
-                    <option value="ROLE_HR">Superviseur</option>
+                    <option value="ROLE_HR">Suprviseur</option>
                     <option value="ROLE_MANAGER">Formateur</option>
                     <option value="ROLE_ADMIN">Administrateur</option>
                     <option value="ROLE_SUPER_ADMIN">Super Administrateur</option>
@@ -549,7 +549,7 @@ role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="custom-file">
                 <input type="file" accept="image/*" name="profileImage"
                 (change)="onProfileImageChange($event)"
-                class="custom-file-input">
+                class="custom-file-input" >
               <label class="custom-file-label"><span [hidden]="!fileName">{{fileName}}</span>
                 <span [hidden]="fileName">Choose File</span>
               </label>
@@ -623,11 +623,10 @@ role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                  class="form-control">
              </div>
              <div class="form-group">
-               <label for="authority">Role <small >(read only)</small></label>
+               <label for="authority">Role <small >(lecture seulement)</small></label>
                  <select name="role"  required [(ngModel)]="editUser.role" class="form-control">
-                   <option value="ROLE_USER">USER</option>
-                   <option value="ROLE_HR">HR</option>
-                   <option value="ROLE_MANAGER">MANAGER</option>
+                   <option value="ROLE_USER">Apprenant</option>
+                   <option value="ROLE_MANAGER">Formateur</option>
                    <option value="ROLE_ADMIN">ADMIN</option>
                    <option value="ROLE_SUPER_ADMIN">SUPER ADMIN</option>
                  </select>
@@ -782,7 +781,7 @@ role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     </form>
   </div>
   
-      <!-- modal user info -->
+      <!-- les informations de l apprenants -->
   <div class="modal fade bd-example-modal-lg" id="viewUserModal" tabindex="-1" role="dialog" aria-labelledby=""
         aria-hidden="true">
         <div class="modal-dialog" role="document">
