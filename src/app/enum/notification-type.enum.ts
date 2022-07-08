@@ -3,5 +3,6 @@ export enum NotificationType {
     SUCCESS = 'success',
     ERROR = 'error',
     INFO = 'info',
-    WARNING = 'Warning'
+    WARNING = 'Warning',
+    DANGER = 'danger'
 }
