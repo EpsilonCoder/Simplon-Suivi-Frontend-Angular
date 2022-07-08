@@ -7,6 +7,7 @@ import { AuthenticationService } from '../service/authentication.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
+import { NgForm } from '@angular/forms';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -26,7 +27,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onRegister(user: User): void {
+  public onRegister(user: User, form: NgForm): void {
     console.log(user);
     this.showLoading = true;
     this.subscriptions.push(
@@ -35,10 +36,13 @@ export class RegisterComponent implements OnInit, OnDestroy {
           this.showLoading = false;
           this.sendNotification(NotificationType.SUCCESS, `Un nouveau compte vient d'etre créer pour ${response.firstName}.
                                       Veuillez consulter votre Email pour récuperer votre mot de passe d'acces`);
+          form.reset();
+          this.router.navigateByUrl('/login');
         },
         (errorResponse: HttpErrorResponse) => {
           this.sendNotification(NotificationType.ERROR, errorResponse.error.message);
           this.showLoading = false;
+          form.reset();
         }
       )
     );

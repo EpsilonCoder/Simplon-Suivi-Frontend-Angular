@@ -9,7 +9,7 @@ height: 100vh"><br><br><br><br>
           </div>
         </div>
         <div class="d-flex justify-content-center form_container">
-          <form #registerForm="ngForm" (ngSubmit)="onRegister(registerForm.value)">
+          <form #registerForm="ngForm" (ngSubmit)="onRegister(registerForm.value,registerForm)">
             <div class="input-group mb-3">
               <div class="input-group-append">
                 <span class="input-group-text"><i class="fas fa-user"></i></span>
