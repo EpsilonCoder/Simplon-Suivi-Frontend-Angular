@@ -1,32 +1,17 @@
 <app-header></app-header>
 
-<section class="breadcrumbs offset-2">
-
-    <div class="container">
-
-      <div class="d-flex justify-content-between align-items-center">
-         <h1 class="text-white">SIMPLON</h1>
+<section class="breadcrumbs">
+  <div class="container">
+      <div class="d-flex justify-content-between align-items-center container position-relative">
+        <h1 class="text-white" style="position:relative; left:35%;"></h1>
          <ol>
-            <a class="nav-item nav-link move-right mr-3" (click)="changeTitle('Profile')" data-toggle="tab" href="#profile">
+            <a class="nav-item nav-link left text-white"  (click)="changeTitle('Profile')" style="position:relative; left:20%;" data-toggle="tab" href="#profile">
                 Bienvenue, {{user?.firstName}}
                 <i class="fa fa-user"></i>
             </a>   
          </ol>
         </div>
-        
-        <!--
-        <div class="row mb-2 mt-2 text-center">
-            <div class="col-md-4">
-            </div>
-            <div class="col-md-4">
-              <h5>Simplon Sénégal</h5>
-              <small *ngIf="titleAction$ | async as title">{{title}}</small>
-            </div>
-            <div class="col-md-4">
-            </div>
-        </div>-->  
-
-    </div>
+      </div>
 </section>
 
 
@@ -57,6 +42,8 @@
 
 
     <div class="tab-content mt-3" id="myTabContent" >
+
+      
         <!-- user table -->
         <div class="tab-pane fade show active" id="users">
           <div class="mb-3 float-right">
@@ -75,70 +62,39 @@
               </button>
             </div>
           </div>
-          <table class="table table-hover" style="border:2px dashed black;" >
-            <thead class="table-borderless">
-              <tr class="text-center">
-                <th>Detail</th>
-                <th>Photo</th>
-                <th>Identifiant</th>
-                <th>Prénom</th>
-                <th>Nom</th>
-                <th>Nom d'utilisateur</th>
-                <th>Email</th>
-                <th [hidden]="!isAdmin">Status</th>
-                <th [hidden]="!isAdmin">Actions</th>
-              </tr>
-            </thead>
-            <tbody *ngFor="let epsilon of users">
-              <tr class="text-center" >
-                <td>
-                    <div class="btn-group">
-                        <button class="btn btn-outline-dark" (click)="onSelectUser(epsilon)" ><i class="fas fa-eye"></i></button>
-                      </div>
-                </td>
-                <td >
-                  <img height="40" width="40" src="{{epsilon?.profileImageUrl}}" class="rounded-circle img-fluid img-thumbnail" alt=""/>
-                </td>
-                <td >{{epsilon?.userId}}</td>
-                <td >{{epsilon?.firstName}}</td>
-                <td >{{epsilon?.lastName}}</td>
-                <td >{{epsilon?.username}}</td>
-                <td >{{epsilon?.email}}</td>
-                <td [hidden]="!isAdmin">
-                  <span [hidden]="!isAdmin" [hidden]="!epsilon?.active" class="badge badge-success">Active</span>
-                  <span [hidden]="epsilon?.active" class="badge badge-danger">Inactive</span>
-                </td>
-                <td class="" >
-                  <div class="btn-group">
-                    <button  class="btn btn-outline-dark" (click)="onEditUser(epsilon)"><i class="fas fa-edit"></i></button>
-                    <button type="button" class="btn btn-outline-danger"
-                    aria-label="Delete user" (click)="onDeleteUser(epsilon)">
-                    <i class="fas fa-trash"></i>
-                </button>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
+          
+          <table class="table table-hover">
+            
+            <!--Permettre l affichages du champs de recherche-->
+            
           </table>
-
-          <div class="container">
-            <div class="row">
-              <div class="col-sm" *ngFor="let epsilon of users">
-                <!--
-                <div class="card" style="width: 18rem;">
-                  <div class="card-body">
-                    <img height="60" width="80" src="{{epsilon?.profileImageUrl}}" class="rounded-circle img-thumbnail" alt=""/>
-                    <h5 class="card-title">{{epsilon?.userId}} {{epsilon?.username}}</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">{{epsilon?.firstName}}  {{epsilon?.lastName}}</h6>
-                    <p class="card-text">{{epsilon?.email}}</p>
-                    <a  class="btn btn-outline-dark mr-3" (click)="onEditUser(epsilon)"><i class="fas fa-edit"></i></a>
-                    <a  class="btn btn-outline-danger mr-3"
-                     aria-label="Delete user" (click)="onDeleteUser(epsilon)"> <i class="fas fa-trash"></i></a>
-                    <a  class="btn btn-outline-dark " (click)="onSelectUser(epsilon)"><i class="fas fa-eye"></i></a>
-                  </div>
+          <div id="services" class="section relative pt-20 pb-8 md:pt-16 md:pb-0 bg-white">
+            <div class="container xl:max-w-6xl mx-auto px-4">
+                <!-- la carte des apprenants  -->
+                <div class="flex flex-wrap flex-row -mx-4 text-center">
+                    <div class="flex-shrink px-4 max-w-full w-full sm:w-1/2 lg:w-1/3 lg:px-6 wow fadeInUp" data-wow-duration="1s" style="visibility: visible; animation-duration: 1s; animation-name: fadeInUp;" *ngFor="let epsilon of users">
+                        <!-- affichage des apprenants -->
+                        <div class="py-8 px-12 mb-12 bg-gray-50 border-b border-gray-100 transform transition duration-300 ease-in-out hover:-translate-y-2">
+                            <div class="inline-block text-gray-900 mb-4">
+                                <!-- image -->
+                                <img height="100" width="100" src="{{epsilon?.profileImageUrl}}" class="rounded-circle img-fluid img-thumbnail" alt=""/>
+                            </div>
+                            <h3 class="text-lg leading-normal mb-2 font-semibold text-black">{{epsilon?.firstName}}  {{epsilon?.lastName}}</h3>
+                            <p class="text-gray-500">Email : {{epsilon?.email}} <br> Numéro Compte : {{epsilon?.userId}} <br>Etat :
+                              <span [hidden]="!isAdmin" [hidden]="!epsilon?.active" class="badge badge-success">Active</span>
+                              <span [hidden]="epsilon?.active" class="badge badge-danger">Inactive</span> 
+                            </p>
+                            <div class="btn-group">
+                              <button  class="btn btn-outline-dark" (click)="onEditUser(epsilon)"><i class="fas fa-edit"></i></button>
+                              <button type="button" class="btn btn-outline-danger" aria-label="Delete user" (click)="onDeleteUser(epsilon)"> <i class="fas fa-trash"></i></button>
+                              <button class="btn btn-outline-dark" (click)="onSelectUser(epsilon)" ><i class="fas fa-eye"></i></button>
+                            </div>
+                        </div>
+                        <!-- affichage des apprenants -->
+                    </div>
+                    
                 </div>
-                -->
-              </div>
+                <!-- la carte des apprenants -->
             </div>
           </div>
         </div>
@@ -327,7 +283,7 @@
         </form>
     </div>
     
-        <!--Les information s'affichant sous forme de popup modal-->
+      <!--Les information s'affichant sous forme de popup modal-->
       <div class="modal fade bd-example-modal-lg" id="viewUserModal" tabindex="-1" role="dialog" aria-labelledby=""
         aria-hidden="true">
         <div class="modal-dialog" role="document">

@@ -23,7 +23,6 @@ export class AuthenticationGuard implements CanActivate {
     //redirection vers la page d'authentification
     this.router.navigate(['/login']);
     this.notificationService.notify(NotificationType.ERROR, `Simplon :joystick: vous devez etre connecté pour avoir acces a ce contenue`.toUpperCase());
-    //send notification to user
     return false
   }
 }
