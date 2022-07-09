@@ -4,6 +4,7 @@ import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { SubSink } from 'subsink';
+import Swal from 'sweetalert2';
 import { NotificationType } from '../enum/notification-type.enum';
 import { Role } from '../enum/role.enum';
 import { CustomHttpResponse } from '../model/custom-http-response';
@@ -83,7 +84,7 @@ export class UserComponent implements OnInit, OnDestroy {
   public onSelectUser(selectedUser: User): void {
 
     this.selectedUser = selectedUser;
-    document.getElementById('openUserInfo')?.click();
+    this.clickButton('openUserInfo');
 
   }
 
@@ -99,26 +100,29 @@ export class UserComponent implements OnInit, OnDestroy {
     this.clickButton('new-user-save');
   }
 
-  onAddNewUser(userForm: NgForm): void {
-    const formData: FormData = this.userService.createUserFromData('', userForm.value, this.profileImage!);
-    this.subs.add(
-      this.userService.addUser(formData)
-        .subscribe({
-          next: (user: User) => {
-            this.clickButton('new-user-close');
-            this.getUsers(false);
-            this.fileName = '';
-            this.profileImage != null;
-            userForm.reset();
-            userForm.form.controls['role'].setValue('ROLE_USER');
-            this.sendNotification(NotificationType.SUCCESS, `${user.firstName} ${user.lastName} a bien été ajouté`);
-          },
-          error: (err: HttpErrorResponse) => {
-            this.sendNotification(NotificationType.ERROR, err.error.message);
-            this.profileImage != null;
-          }
-        }));
+  public onAddNewUser(userForm: NgForm): void {
+    const formData = this.userService.createUserFromData('', userForm.value, this.profileImage);
+    this.subcriptions.push(
+      this.userService.addUser(formData).subscribe(
+        (response: User) => {
+          console.log(formData);
+          this.clickButton('new-user-close');
+          this.getUsers(false);
+          this.fileName = '';
+          this.profileImage = null;
+          userForm.reset();
+          this.sendNotification(NotificationType.SUCCESS, `${response.firstName} ${response.lastName} added successfully`);
+        },
+        (errorResponse: HttpErrorResponse) => {
+          this.sendNotification(NotificationType.ERROR, errorResponse.error.message);
+          this.profileImage = null;
+        }
+      )
+    );
   }
+
+
+
 
   clickButton(buttonId: string): void {
     document.getElementById(buttonId)?.click();
@@ -142,8 +146,8 @@ export class UserComponent implements OnInit, OnDestroy {
     }
   }
 
-  onEditUser(epsilon: User): void {
-    this.editUser = this.editUser;
+  public onEditUser(editUser: User): void {
+    this.editUser = editUser;
     this.currentUsername = this.editUser.username;
     this.clickButton('openUserEdit');
 
@@ -169,10 +173,28 @@ export class UserComponent implements OnInit, OnDestroy {
     );
   }
 
-  public onDeleteUser(username: User): void {
+  public async onDeleteUser(username: User): Promise<void> {
+
     this.subcriptions.push(
       this.userService.deleteUser(username.username).subscribe(
         (response: CustomHttpResponse) => {
+          Swal.fire({
+            title: 'Etes vous sure?',
+            text: "Voulez vous  vraiment supprimer cet utilisateur!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'OUI, supprimer!'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              Swal.fire(
+                'Supprimé!',
+                'Cet utilisateur a été supprimé avec succes',
+                'success'
+              )
+            }
+          });
           this.sendNotification(NotificationType.SUCCESS, "L'utilisateur a bien été supprimée");
           this.getUsers(false);
         },
@@ -192,7 +214,13 @@ export class UserComponent implements OnInit, OnDestroy {
 
       this.userService.resetPassword(emailAddress).subscribe(
         (response: CustomHttpResponse) => {
-          this.sendNotification(NotificationType.SUCCESS, 'Le mot de passe de l utilisateur a bien été mis a jour');
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: "Le mot de passe de l utilisateur a bien été mis a jour",
+            showConfirmButton: false,
+            timer: 3000
+          });
           this.refreshing = false;
           emailForm.resetForm();
         },
@@ -208,7 +236,14 @@ export class UserComponent implements OnInit, OnDestroy {
   onLogOut(): void {
     this.authenticationService.logOut();
     this.router.navigate(['/login']);
-    this.sendNotification(NotificationType.SUCCESS, `A plutard !! Merci d'avoir été sur Simplon Suivi`);
+    Swal.fire({
+      position: 'top-end',
+      icon: 'success',
+      title: "A plutard !! Merci d'avoir été sur Simplon Suivi",
+      showConfirmButton: false,
+      timer: 4000
+    });
+    // this.sendNotification(NotificationType.SUCCESS, `A plutard !! Merci d'avoir été sur Simplon Suivi`);
   }
 
   public onUpdateCurrentUser(user: User): void {
@@ -222,7 +257,14 @@ export class UserComponent implements OnInit, OnDestroy {
           this.getUsers(false);
           this.fileName = '';
           this.profileImage = null;
-          this.sendNotification(NotificationType.SUCCESS, `${response.firstName} ${response.lastName} La mise a jour a été effectué avec succés`);
+          Swal.fire({
+            position: 'bottom-end',
+            icon: 'success',
+            title: `${response.firstName} ${response.lastName} La mise a jour a été effectué avec succés `,
+            showConfirmButton: false,
+            timer: 4000
+          });
+          //this.sendNotification(NotificationType.SUCCESS, `${response.firstName} ${response.lastName} La mise a jour a été effectué avec succés `);
         },
         (errorResponse: HttpErrorResponse) => {
           this.sendNotification(NotificationType.ERROR, errorResponse.error.message);
