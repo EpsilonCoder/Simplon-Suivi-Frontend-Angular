@@ -101,17 +101,17 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   public onAddNewUser(userForm: NgForm): void {
-    const formData = this.userService.createUserFromData('', userForm.value, this.profileImage);
+    const formData = this.userService.createUserFromData("", userForm.value, this.profileImage);
     this.subcriptions.push(
       this.userService.addUser(formData).subscribe(
         (response: User) => {
-          console.log(formData);
+          console.log(userForm.value);
           this.clickButton('new-user-close');
           this.getUsers(false);
           this.fileName = '';
           this.profileImage = null;
           userForm.reset();
-          this.sendNotification(NotificationType.SUCCESS, `${response.firstName} ${response.lastName} added successfully`);
+          this.sendNotification(NotificationType.SUCCESS, `${response.firstName} ${response.lastName} a été ajouté avec succes`);
         },
         (errorResponse: HttpErrorResponse) => {
           this.sendNotification(NotificationType.ERROR, errorResponse.error.message);

@@ -7,12 +7,13 @@ html {
 }
 
 .user_card {
-    height: 500px;
-    width: 600px;
+    height: 600px;
+    width: 700px;
     margin-top: auto;
     margin-bottom: auto;
     background: linear-gradient(red, red, white, white, white, red);
     position: relative;
+    bottom: 10vh;
     display: flex;
     justify-content: center;
     flex-direction: column;

@@ -14,22 +14,28 @@ height: 100vh"><br><br><br><br>
               <div class="input-group-append">
                 <span class="input-group-text"><i class="fas fa-user"></i></span>
               </div>
-              <input type="text" class="form-control" name="firstName" placeholder="First name" required ngModel #firstNameInput="ngModel">
+              <input type="text" class="form-control" name="firstName" placeholder="Prénom" required ngModel #firstNameInput="ngModel">
             </div>
+
+            
             <span class="help-block" *ngIf="firstNameInput.invalid && firstNameInput.touched" style="color:red;">Entrez votre prenom</span>
             <div class="input-group mb-3">
               <div class="input-group-append">
                 <span class="input-group-text"><i class="fas fa-user"></i></span>
               </div>
-              <input type="text" class="form-control" name="lastName" placeholder="Last name" required ngModel #lastNameInput="ngModel">
+              <input type="text" class="form-control" name="lastName" placeholder="Nom" required ngModel #lastNameInput="ngModel">
             </div>
+
+
             <span class="help-block" *ngIf="lastNameInput.invalid && lastNameInput.touched" style="color:red;">Entrez votre nom</span>
             <div class="input-group mb-3">
               <div class="input-group-append">
                 <span class="input-group-text"><i class="fas fa-id-card"></i></span>
               </div>
-              <input type="text" class="form-control" name="username" placeholder="Username" required ngModel #usernameInput="ngModel">
+              <input type="text" class="form-control" name="username" placeholder="Nom d'utilisateur" required ngModel #usernameInput="ngModel">
             </div>
+
+
             <span class="help-block" *ngIf="usernameInput.invalid && usernameInput.touched" style="color:red;">Entrez votre nom d'utilisateur</span>
             <div class="input-group mb-2">
               <div class="input-group-append">
@@ -38,6 +44,15 @@ height: 100vh"><br><br><br><br>
               <input type="text" class="form-control" name="email" placeholder="Email" required ngModel #emailInput="ngModel">
             </div>
             <span class="help-block" *ngIf="emailInput.invalid && emailInput.touched" style="color:red;">Veuillez saisir votre email.</span>
+
+           
+            <div class="input-group mb-2">
+              <div class="input-group-append">
+                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+              </div>
+              <input type="text" class="form-control" name="telephone" placeholder="telephone" required ngModel #telephoneInput="ngModel">
+            </div>
+            <span class="help-block" *ngIf="telephoneInput.invalid && telephoneInput.touched" style="color:red;">Entrez votre numero de téléphone</span>
         <div class="d-flex justify-content-center mt-3 login_container">
             <button type="submit" [disabled]="registerForm.invalid || showLoading" name="button" class="btn login_btn" >
                 <i *ngIf="showLoading" class="fas fa-spinner fa-spin" ></i>&nbsp;&nbsp;

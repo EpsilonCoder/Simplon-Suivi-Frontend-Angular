@@ -52,13 +52,16 @@ export class UserService {
     const formData = new FormData();
     formData.append('currentUsername', loggedInUsername);
     formData.append('firstName', user.firstName);
-    formData.append('lastName', user.lastName);
+    formData.append('lastName', user.firstName);
     formData.append('username', user.username);
     formData.append('email', user.email);
+    formData.append('telephone', user.telephone);
     formData.append('role', user.role);
     formData.append('profileImage', profileImage);
     formData.append('isActive', JSON.stringify(user.active));
     formData.append('isNotLocked', JSON.stringify(user.isNotLocked));
+    formData.append('situations', JSON.stringify(user.situations));
+    formData.append('entretien', JSON.stringify(user.entretien));
     return formData;
   }
 

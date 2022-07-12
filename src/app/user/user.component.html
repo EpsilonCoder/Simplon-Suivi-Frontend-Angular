@@ -76,12 +76,18 @@
                         <div class="py-8 px-12 mb-12 bg-gray-50 border-b border-gray-100 transform transition duration-300 ease-in-out hover:-translate-y-2" style="border-radius:20px ;">
                             <div class="inline-block text-gray-900 mb-4">
                                 <!-- image -->
-                                <img height="100" width="100" src="{{epsilon?.profileImageUrl}}" class="rounded-circle img-fluid img-thumbnail" alt=""/>
+                                <img height="100" width="100" src="{{epsilon?.profileImageUrl}}" class="rounded-circle img-fluid img-thumbnail" alt=""/><br>
+                                <span [hidden]="!isAdmin" [hidden]="!epsilon?.active" class="badge badge-success">Active</span>
+                                <span [hidden]="epsilon?.active" class="badge badge-danger">bloqué</span> <br>
                             </div>
                             <h3 class="text-lg leading-normal mb-2 font-semibold text-black">{{epsilon?.firstName}}  {{epsilon?.lastName}}</h3>
-                            <p class="text-gray-500">Email : {{epsilon?.email}} <br> Numéro Compte : {{epsilon?.userId}} <br>Etat du compte :
-                              <span [hidden]="!isAdmin" [hidden]="!epsilon?.active" class="badge badge-success">Active</span>
-                              <span [hidden]="epsilon?.active" class="badge badge-danger">bloqué</span> 
+                            <p class="text-gray-500">Email : {{epsilon?.email}} <br>Téléphone :{{epsilon?.telephone}} <br> Numéro Compte : {{epsilon?.userId}} 
+                             <br> Est :
+                              <span [hidden]="epsilon?.situations" class="badge badge-warning">A la fabrique</span>
+                              <span [hidden]="!epsilon?.situations" class="badge badge-info">En Entreprise  <button class="btn btn-outline-dark" (click)="onSelectUser(epsilon)" ><i class="fas fa-eye"></i></button></span><br>
+                              Situation :
+                              <span [hidden]="epsilon?.entretien" class="badge badge-danger">En attente de reponse || d'opportunité</span>
+                              <span [hidden]="!epsilon?.entretien" class="badge badge-warning">Entretien fait et validé </span>
                             </p>
                             <div class="btn-group">
                               <button  class="btn btn-outline-dark" (click)="onEditUser(epsilon)"><i class="fas fa-edit"></i></button>
@@ -365,9 +371,9 @@
 
       <!--La vue pour ajouter  un utilisateur-->
       
-      <div  class="modal draggable fade bd-example-modal-lg" id="addUserModal" tabindex="-1" role="dialog"
+    <div  class="modal draggable fade bd-example-modal-lg" id="addUserModal" tabindex="-1" role="dialog"
       aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-      <div class="modal-dialog" role="document">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title text-center">Ajouter un utilisateur</h5>
@@ -392,10 +398,17 @@
                   <label for="username">Nom d'utilisateur</label>
                   <input type="text" name="username" required ngModel class="form-control">
                 </div>
+
                 <div class="form-group">
                   <label for="email">Email</label>
                   <input type="email" name="email" required ngModel class="form-control">
                 </div>
+
+                <div class="form-group">
+                  <label for="telephone">Téléphone</label>
+                  <input type="telephone" name="telephone" required ngModel class="form-control">
+                </div>
+
                 <div class="form-group" [hidden]="!isAdmin">
                   <label for="authority">Role</label>
                   <select name="role" required ngModel="ROLE_USER" class="form-control">
@@ -406,10 +419,12 @@
                     <option value="ROLE_SUPER_ADMIN">Super Administrateur</option>
                   </select>
                 </div>
+
                 <div  class="form-group">
                   <label for="authority">Role</label>
                   <input type="text" name="role" required ngModel="USER" readonly class="form-control">
                 </div>
+
                 <div class="input-group mb-2">
                   <div class="input-group-prepend">
                     <span class="input-group-text">Photo de profile</span>
@@ -423,6 +438,7 @@
                     </label>
                   </div>
                 </div>
+
                 <fieldset class="form-group">
                   <div class="form-check">
                     <label class="form-check-label">
@@ -436,6 +452,32 @@
                       bloquer le compte 
                     </label>
                   </div>
+                </fieldset>
+
+                <fieldset class="form-group">
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input type="checkbox" name="situations" ngModel class="form-check-input" >
+                      A la fabrique
+                    </label>
+                  </div>
+                  <div class="form-check disabled">
+                    <label class="form-check-label">
+                      <input type="checkbox" name="situations" ngModel class="form-check-input">
+                      En entreprise 
+                    </label>
+                  </div>
+                </fieldset>
+      
+                <fieldset class="form-group">
+                  <div class="form-check 1">
+                    <label class="form-check-label">
+                      <input name="entretien" type="checkbox"  [(ngModel)]="editUser.entretien"
+                        class="form-check-input">
+                        <small >Changer les resultats de l'entretien (En attente || Fait & validé)</small>
+                    </label>
+                  </div>
+                  
                 </fieldset>
                 <button type="submit" style="display: none;" id="new-user-save"></button>
               </form>
@@ -458,7 +500,7 @@ role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 <div class="modal-dialog" role="document">
   <div class="modal-content">
     <div class="modal-header">
-      <h5 class="modal-title text-center">Edit {{editUser?.firstName}}
+      <h5 class="modal-title text-center">Modifier {{editUser?.firstName}}
         {{editUser?.lastName}}</h5>
       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
@@ -468,17 +510,17 @@ role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
       <div class="">
         <form #editUserForm="ngForm">
           <div class="form-group">
-            <label for="firstName">First Name</label>
+            <label for="firstName">Prénom</label>
             <input type="text" name="firstName" required value="{{editUser.firstName}}"
               [(ngModel)]="editUser.firstName" class="form-control">
           </div>
           <div class="form-group">
-            <label for="lastName">Last Name</label>
+            <label for="lastName">Nom</label>
             <input type="text" name="lastName" required
               [(ngModel)]="editUser.lastName" class="form-control">
           </div>
           <div class="form-group">
-            <label for="username">Username</label>
+            <label for="username">Nom d'utilisateur</label>
             <input type="text" name="username" required
               [(ngModel)]="editUser.username" class="form-control">
           </div>
@@ -487,14 +529,19 @@ role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <input type="email" name="email" required [(ngModel)]="editUser.email"
               class="form-control">
           </div>
+
+          <div class="form-group">
+            <label for="telephone">Téléphone</label>
+            <input type="telephone" name="telephone" required [(ngModel)]="editUser.telephone"
+              class="form-control">
+          </div>
           <div class="form-group">
             <label for="authority">Role</label>
               <select name="role" required [(ngModel)]="editUser.role" class="form-control">
-                <option value="ROLE_USER">USER</option>
-                <option value="ROLE_HR">HR</option>
-                <option value="ROLE_MANAGER">MANAGER</option>
-                <option value="ROLE_ADMIN">ADMIN</option>
-                <option value="ROLE_SUPER_ADMIN">SUPER ADMIN</option>
+                <option value="ROLE_USER">apprenant</option>
+                <option value="ROLE_MANAGER">Formateur</option>
+                <option value="ROLE_ADMIN">Admininstrateur</option>
+                <option value="ROLE_SUPER_ADMIN">Super Administrateur</option>
               </select>
           </div>
           <div class="input-group mb-2">
@@ -522,9 +569,31 @@ role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
               <label class="form-check-label">
                 <input name="locked" type="checkbox" [(ngModel)]="editUser.isNotLocked"
                   class="form-check-input">
-                Unlocked
+                Débloquer
               </label>
             </div>
+          </fieldset>
+
+          <fieldset class="form-group">
+            <div class="form-check 1">
+              <label class="form-check-label">
+                <input name="situations" type="checkbox"  [(ngModel)]="editUser.situations"
+                  class="form-check-input">
+                  <small >Changer la situation de l'apprenant (Entreprise || A la fabrique)</small>
+              </label>
+            </div>
+            
+          </fieldset>
+
+          <fieldset class="form-group">
+            <div class="form-check 1">
+              <label class="form-check-label">
+                <input name="entretien" type="checkbox"  [(ngModel)]="editUser.entretien"
+                  class="form-check-input">
+                  <small >Changer les resultats de l'entretien (En attente || Fait & validé)</small>
+              </label>
+            </div>
+            
           </fieldset>
         </form>
       </div>
@@ -537,185 +606,6 @@ role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 </div>
 </div>
 
-
-
-
-   <!-- modal edit user -->
-   <div class="modal draggable fade bd-example-modal-lg" id="editUserModal" tabindex="-1"
-   role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-   <div class="modal-dialog" role="document">
-     <div class="modal-content">
-       <div class="modal-header">
-         <h5 class="modal-title text-center">Edit {{editUser?.firstName}}
-           {{editUser?.lastName}} <small >
-             (read only)
-           </small></h5>
-         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-           <span aria-hidden="true">&times;</span>
-         </button>
-       </div>
-       <div class="modal-body">
-         <div class="">
-           <form #editUserForm="ngForm">
-             <div class="form-group">
-               <label for="firstName">First Name</label>
-               <input type="text" name="firstName"  required
-                 [(ngModel)]="editUser.firstName" class="form-control">
-             </div>
-             <div class="form-group">
-               <label for="lastName">Last Name</label>
-               <input type="text" name="lastName"  required
-                 [(ngModel)]="editUser.lastName" class="form-control">
-             </div>
-             <div class="form-group">
-               <label for="username">Username</label>
-               <input type="text" name="username"  required
-                 [(ngModel)]="editUser.username" class="form-control">
-             </div>
-             <div class="form-group">
-               <label for="email">Email</label>
-               <input type="email" name="email"  required [(ngModel)]="editUser.email"
-                 class="form-control">
-             </div>
-             <div class="form-group">
-               <label for="authority">Role <small >(lecture seulement)</small></label>
-                 <select name="role"  required [(ngModel)]="editUser.role" class="form-control">
-                   <option value="ROLE_USER">Apprenant</option>
-                   <option value="ROLE_MANAGER">Formateur</option>
-                   <option value="ROLE_ADMIN">ADMIN</option>
-                   <option value="ROLE_SUPER_ADMIN">SUPER ADMIN</option>
-                 </select>
-             </div>
-             <div class="input-group mb-2">
-               <div class="input-group-prepend">
-                 <span class="input-group-text">Profile Picture </span>
-               </div>
-               <div class="custom-file">
-                <input type="file" accept="image/*" name="profileImage"
-                (change)="onProfileImageChange($event)"
-                class="custom-file-input">
-                 <label class="custom-file-label"><span [hidden]="!fileName">{{fileName}}</span>
-                   <span [hidden]="fileName">Choose File</span>
-                 </label>
-               </div>
-             </div>
-             <fieldset class="form-group">
-               <div class="form-check">
-                 <label class="form-check-label">
-                   <input name="active" type="checkbox"  [(ngModel)]="editUser.active"
-                     class="form-check-input">
-                   Acitve <small >(read only)</small>
-                 </label>
-               </div>
-               <div class="form-check disabled">
-                 <label class="form-check-label">
-                   <input name="locked" type="checkbox"  [(ngModel)]="editUser.isNotLocked"
-                     class="form-check-input">
-                   Unlocked <small >(read only)</small>
-                 </label>
-               </div>
-             </fieldset>
-           </form>
-         </div>
-       </div>
-       <div class="modal-footer">
-         <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeEditUserModalButton">Close</button>
-         <button type="button" (click)="onUpdateUser()" [disabled]="editUserForm.invalid" class="btn btn-primary">Save changes</button>
-       </div>
-     </div>
-   </div>
- </div>
- 
- <!-- modal edit user -->
- <div class="modal draggable fade bd-example-modal-lg" id="editUserModal" tabindex="-1"
- role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
- <div class="modal-dialog" role="document">
-   <div class="modal-content">
-     <div class="modal-header">
-       <h5 class="modal-title text-center">Edit {{editUser.firstName}}
-         {{editUser.lastName}}</h5>
-       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-         <span aria-hidden="true">&times;</span>
-       </button>
-     </div>
-     <div class="modal-body">
-       <div class="">
-         <form #editUserForm="ngForm">
-           <div class="form-group">
-             <label for="firstName">First Name</label>
-             <input type="text" name="firstName" required
-               [(ngModel)]="editUser.firstName" class="form-control">
-           </div>
-           <div class="form-group">
-             <label for="lastName">Last Name</label>
-             <input type="text" name="lastName" required
-               [(ngModel)]="editUser.lastName" class="form-control">
-           </div>
-           <div class="form-group">
-             <label for="username">Username</label>
-             <input type="text" name="username" required
-               [(ngModel)]="editUser.username" class="form-control">
-           </div>
-           <div class="form-group">
-             <label for="email">Email</label>
-             <input type="email" name="email" required [(ngModel)]="editUser.email"
-               class="form-control">
-           </div>
-           <div class="form-group">
-             <label for="authority">Role</label>
-               <select name="role" required [(ngModel)]="editUser.role" class="form-control">
-                 <option value="ROLE_USER">USER</option>
-                 <option value="ROLE_HR">HR</option>
-                 <option value="ROLE_MANAGER">MANAGER</option>
-                 <option value="ROLE_ADMIN">ADMIN</option>
-                 <option value="ROLE_SUPER_ADMIN">SUPER ADMIN</option>
-               </select>
-           </div>
-           <div class="input-group mb-2">
-             <div class="input-group-prepend">
-               <span class="input-group-text">Profile Picture </span>
-             </div>
-             <div class="custom-file">
-                <input type="file" accept="image/*" name="profileImage"
-                      (change)="onProfileImageChange($event)"
-                      class="custom-file-input">
-               <label class="custom-file-label"><span [hidden]="!fileName">{{fileName}}</span>
-                 <span [hidden]="fileName">Choose File</span>
-               </label>
-             </div>
-           </div>
-           <fieldset class="form-group">
-             <div class="form-check">
-               <label class="form-check-label">
-                 <input name="active" type="checkbox" [(ngModel)]="editUser.active"
-                   class="form-check-input">
-                 Acitve
-               </label>
-             </div>
-             <div class="form-check disabled">
-               <label class="form-check-label">
-                 <input name="locked" type="checkbox" [(ngModel)]="editUser.isNotLocked"
-                   class="form-check-input">
-                 Unlocked
-               </label>
-             </div>
-           </fieldset>
-         </form>
-       </div>
-     </div>
-     <div class="modal-footer">
-       <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeEditUserModalButton">Close</button>
-       <button type="button" (click)="onUpdateUser()" [disabled]="editUserForm.invalid" class="btn btn-primary">Save changes</button>
-     </div>
-   </div>
- </div>
- </div>
-
- 
-
-
-
- 
 
   <div  class="tab-pane fade" id="reset-password">
     <form #resetPasswordForm="ngForm" (ngSubmit)="onResetPassword(resetPasswordForm)">
