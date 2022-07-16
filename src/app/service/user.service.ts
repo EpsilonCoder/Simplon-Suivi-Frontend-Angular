@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { User } from '../model/user';
 import { environment } from 'src/environments/environment';
 import { CustomHttpResponse } from '../model/custom-http-response';
+import { Promo } from '../model/promo';
 
 
 @Injectable({ providedIn: 'root' })
@@ -14,6 +15,14 @@ export class UserService {
 
   public getUsers(): Observable<User[]> {
     return this.http.get<User[]>(`${this.host}/user/list`);
+  }
+
+  public getUsersAlafabrique(): Observable<User[]> {
+    return this.http.get<User[]>(`${this.host}/user/Alafabrique`);
+  }
+
+  public getUsersEnEntreprise(): Observable<User[]> {
+    return this.http.get<User[]>(`${this.host}/user/Entreprise`);
   }
 
   public addUser(formData: FormData): Observable<User> {
@@ -64,5 +73,31 @@ export class UserService {
     formData.append('entretien', JSON.stringify(user.entretien));
     return formData;
   }
+
+
+  /**
+   * Service pour la  gestion des promotions
+   * 
+   * **/
+
+  public addPromo(formData: FormData): Observable<Promo> {
+    return this.http.post<Promo>(`${this.host}/promoes`, formData);
+  }
+
+  public getPromo(): Observable<Promo[]> {
+    return this.http.get<Promo[]>(`${this.host}/promoes`);
+  }
+
+  public updatePromo(formData: FormData): Observable<Promo> {
+    return this.http.put<Promo>(`${this.host}/promoes`, formData);
+  }
+
+  createPromoFromData(promo: Promo): FormData {
+    const formData = new FormData();
+    formData.append('libelle', promo.libelle);
+    return formData;
+  }
+
+
 
 }

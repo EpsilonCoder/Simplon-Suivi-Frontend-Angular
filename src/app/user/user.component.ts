@@ -1,7 +1,8 @@
 import { HttpErrorResponse, HttpEvent, HttpEventType } from '@angular/common/http';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import * as Chart from 'chart.js';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { SubSink } from 'subsink';
 import Swal from 'sweetalert2';
@@ -13,18 +14,17 @@ import { User } from '../model/user';
 import { AuthenticationService } from '../service/authentication.service';
 import { NotificationService } from '../service/notification.service';
 import { UserService } from '../service/user.service';
-
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
-  styleUrls: ['./user.component.css']
+  styleUrls: ['./user.component.css'],
+
+
 })
 export class UserComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
   private titleSubject = new BehaviorSubject<string>('Profile');
   public titleAction$ = this.titleSubject.asObservable();
-
-  public user!: User;
   public users!: User[];
   public refreshing: boolean | undefined;
   private subcriptions: Subscription[] = [];
@@ -34,7 +34,8 @@ export class UserComponent implements OnInit, OnDestroy {
   public editUser = new User();
   private currentUsername!: string;
   public fileStatus = new FileuploadStatus();
-
+  user: any;
+  response: any;
   constructor(private router: Router, private userService: UserService, private authenticationService: AuthenticationService,
     private notificationService: NotificationService) { }
 
@@ -45,7 +46,13 @@ export class UserComponent implements OnInit, OnDestroy {
       this.router.navigateByUrl('/login');
     }
     this.user = this.authenticationService.getUserFromLocalCache();
+    this.getUsersAlafabrique(true);
+    this.getUsersEnEntreprise(true)
+
+
     this.getUsers(true);
+
+
   }
 
   public changeTitle(title: string): void {
@@ -69,6 +76,89 @@ export class UserComponent implements OnInit, OnDestroy {
         }
       )
     )
+  }
+
+  public getUsersEnEntreprise(showNotification: boolean): void {
+    var entreprise = 0
+    this.userService.getUsersEnEntreprise().subscribe(
+      (data: User[]) => {
+        this.users = data;
+        if (showNotification) {
+          entreprise = data.length;
+          var myChart = new Chart("myChart", {
+            type: 'polarArea',
+            data: {
+              labels: ['Apprenant a la fabrique', 'Apprenant en entreprise', 'Purple', 'green', 'Orange'],
+              datasets: [{
+                label: 'Statistique de l application',
+                data: [, entreprise, 7, 3, 14],
+                backgroundColor: [
+                  'rgb(255, 99, 132)',
+                  'rgb(75, 192, 192)',
+                  'rgb(255, 205, 86)',
+                  'rgb(201, 203, 207)',
+                  'rgb(54, 162, 235)'
+                ]
+              }]
+            },
+            options: {
+              scales: {
+                yAxes: [{
+                  ticks: {
+                    beginAtZero: true
+                  }
+                }]
+              }
+            }
+          });
+        }
+      }
+    )
+  }
+
+
+  public getUsersAlafabrique(showNotification: boolean): void {
+    var nombre = 0
+    this.userService.getUsersAlafabrique().subscribe(
+      (data: User[]) => {
+        this.users = data;
+        if (showNotification) {
+          nombre = data.length;
+          var myChart = new Chart("myChart", {
+            type: 'polarArea',
+            data: {
+              labels: ['Apprenant a la fabrique', 'Apprenant en entreprise', 'Purple', 'green', 'Orange'],
+              datasets: [{
+                label: 'Statistique de l application',
+                data: [nombre, 16, 7, 3, 14],
+                backgroundColor: [
+                  'rgb(255, 99, 132)',
+                  'rgb(75, 192, 192)',
+                  'rgb(255, 205, 86)',
+                  'rgb(201, 203, 207)',
+                  'rgb(54, 162, 235)'
+                ]
+              }]
+            },
+            options: {
+              scales: {
+                yAxes: [{
+                  ticks: {
+                    beginAtZero: true
+                  }
+                }]
+              }
+            }
+          });
+
+        }
+      }
+    )
+
+
+
+
+
   }
 
   private sendNotification(notificationType: NotificationType, message: string): void {
@@ -342,4 +432,11 @@ export class UserComponent implements OnInit, OnDestroy {
     this.subs.unsubscribe();
   }
 
+
 }
+
+
+function nombre(nombre: any) {
+  throw new Error('Function not implemented.');
+}
+

@@ -1,1 +1,89 @@
-<p>promotion works!</p>
+<app-header></app-header>
+
+<section class="breadcrumbs">
+  <div class="container">
+      <div class="d-flex justify-content-between align-items-center container position-relative">
+        <h1 class="text-white" style="position:relative; left:35%;"></h1>
+         <ol>
+            <a class="nav-item nav-link left text-white"   style="position:relative; left:20%;" data-toggle="tab" href="#profile">
+                Bienvenue, 
+                <i class="fa fa-user"></i>
+            </a>   
+         </ol>
+        </div>
+      </div>
+</section>
+
+
+<section class="inner-page offset-3">
+   <div class="container">
+
+
+    <!-- component -->
+<div id="services" class="section relative pt-20 pb-8 md:pt-16 md:pb-0 bg-white">
+    <div class="container xl:max-w-6xl mx-auto px-4">
+
+        <!-- row -->
+        <button  type="button" class="btn btn-dark" data-toggle="modal" data-target="#ajoutPromoModal">
+            <i class="fa fa-plus"></i>Ajouter un utilisateur
+        </button>
+        <br><br>
+
+        <table class="table table-hover col-md-6">
+            <thead class="bg-dark text-white ">
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Libelle</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let eps of promo._embedded.promoes">
+                <td>{{eps.id}}</td>
+                <td>{{eps.libelle}}</td>
+                <td>
+                <button  class="btn btn-outline-dark"><i class="fas fa-edit"></i></button>
+                <button type="button" class="btn btn-outline-danger" > <i class="fas fa-trash"></i></button>
+               </td>
+              </tr>
+            </tbody>
+          </table>
+        <!-- end row -->
+    </div>
+</div>
+
+
+<div class="modal draggable fade bd-example-modal-lg" id="ajoutPromoModal" tabindex="-1"
+role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title text-center">Modifier</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="">
+        <form #promoForm="ngForm"  (ngSubmit)="onAddNewPromo(promoForm)">
+          <div class="form-group">
+            <label for="libelle">libelle</label>
+            <input type="text" name="libelle" required class="form-control">
+          </div>
+          <button type="submit" style="display: none;" id="new-promo-save"></button>
+        </form>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-dark" data-dismiss="modal" id="closeEditUserModalButton">Fermer</button>
+      <button type="button" (click)="saveNewPromo()" class="btn btn-dark">Enregister les modifications</button>
+    </div>
+  </div>
+</div>
+</div>
+
+</div>
+</section>
+
+
+<app-footer></app-footer>

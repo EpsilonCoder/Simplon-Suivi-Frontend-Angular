@@ -12,6 +12,9 @@ import { AuthInterceptor } from './interceptor/auth.interceptor';
 import { NotificationModule } from './notification.module';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
+import { PromotionComponent } from './promotion/promotion.component';
+import { AnnonceComponent } from './annonce/annonce.component';
+import { EntrepriseComponent } from './entreprise/entreprise.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +23,10 @@ import { FooterComponent } from './footer/footer.component';
     RegisterComponent,
     UserComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    PromotionComponent,
+    AnnonceComponent,
+    EntrepriseComponent,
   ],
   imports: [
     BrowserModule,

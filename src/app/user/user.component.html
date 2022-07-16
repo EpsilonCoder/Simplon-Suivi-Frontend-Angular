@@ -1,23 +1,11 @@
 <app-header></app-header>
 
-<section class="breadcrumbs">
-  <div class="container">
-      <div class="d-flex justify-content-between align-items-center container position-relative">
-        <h1 class="text-white" style="position:relative; left:35%;"></h1>
-         <ol>
-            <a class="nav-item nav-link left text-white"  (click)="changeTitle('Profile')" style="position:relative; left:20%;" data-toggle="tab" href="#profile">
-                Bienvenue, {{user?.firstName}}
-                <i class="fa fa-user"></i>
-            </a>   
-         </ol>
-        </div>
-      </div>
-</section>
+
 
 
 <section class="inner-page offset-3">
    <div class="container">
-    <!-- nav bar -->
+    <!-- na -->
     <!--la liste de nos utilisateurs -->
     <!-- nav bar -->
 <nav class="navbar navbar-expand-md breadcrumb text-white bg-dark" [hidden]="!isAdmin">
@@ -35,12 +23,23 @@
         Profile {{user?.firstName}}
         <i class="fa fa-user"></i>
       </a>
+
+      <a class="nav-item nav-link move-right mr-3" style="color:white;" data-toggle="tab" href="#statistiques">
+        Statistiques
+        <i class="bx bx-chart"></i>
+      </a>
     </div>
   </div>
 </nav>
 
 
     <div class="tab-content mt-3" id="myTabContent" >
+
+      <div class="tab-pane fade show" id="statistiques">
+       
+       <canvas id="myChart"></canvas>
+
+      </div>
 
       
         <!-- user table -->
@@ -51,7 +50,7 @@
                 <input #searchInput="ngModel" ngModel name="searchTerm" class="form-control mr-sm-2" (ngModelChange)="searchUsers(searchInput.value)"
                 type="search" placeholder="Search users...">
              </form>
-              <button  type="button" class="btn btn-dark" data-toggle="modal" data-target="#addUserModal">
+              <button [hidden]="!isAdmin"  type="button" class="btn btn-dark" data-toggle="modal" data-target="#addUserModal">
                 <i class="fa fa-plus"></i>Ajouter un utilisateur
               </button>
             </div>
@@ -76,20 +75,24 @@
                         <div class="py-8 px-12 mb-12 bg-gray-50 border-b border-gray-100 transform transition duration-300 ease-in-out hover:-translate-y-2" style="border-radius:20px ;">
                             <div class="inline-block text-gray-900 mb-4">
                                 <!-- image -->
-                                <img height="100" width="100" src="{{epsilon?.profileImageUrl}}" class="rounded-circle img-fluid img-thumbnail" alt=""/><br>
-                                <span [hidden]="!isAdmin" [hidden]="!epsilon?.active" class="badge badge-success">Active</span>
-                                <span [hidden]="epsilon?.active" class="badge badge-danger">bloqué</span> <br>
+                                <img height="100" width="100" src="{{epsilon?.profileImageUrl}}" class="img-thumbnail" style="border-radius:90px; width:90px; height:90px;" alt=""/><br>
+                                <p>
+                                <span [hidden]="!epsilon?.active" class="badge badge-success">Active</span>
+                                <span [hidden]="epsilon?.active" class="badge badge-danger">bloqué</span> </p><br>
                             </div>
                             <h3 class="text-lg leading-normal mb-2 font-semibold text-black">{{epsilon?.firstName}}  {{epsilon?.lastName}}</h3>
-                            <p class="text-gray-500">Email : {{epsilon?.email}} <br>Téléphone :{{epsilon?.telephone}} <br> Numéro Compte : {{epsilon?.userId}} 
-                             <br> Est :
-                              <span [hidden]="epsilon?.situations" class="badge badge-warning">A la fabrique</span>
-                              <span [hidden]="!epsilon?.situations" class="badge badge-info">En Entreprise  <button class="btn btn-outline-dark" (click)="onSelectUser(epsilon)" ><i class="fas fa-eye"></i></button></span><br>
+                            <div class="text-gray-500">Email : {{epsilon?.email}} <br>Téléphone :{{epsilon?.telephone}} <br> Numéro Compte : {{epsilon?.userId}} 
+                             <br> 
+                              <p [hidden]="!isAdmin">
+                               Est :
+                              <span  [hidden]="epsilon?.situations" class="badge badge-warning">A la fabrique</span>
+                              <span  [hidden]="!epsilon?.situations" class="badge badge-info">En Entreprise  <button class="btn btn-outline-dark" (click)="onSelectUser(epsilon)" ><i class="fas fa-eye"></i></button></span><br>
                               Situation :
-                              <span [hidden]="epsilon?.entretien" class="badge badge-danger">En attente de reponse || d'opportunité</span>
+                              <span [hidden]="epsilon?.entretien" class="badge badge-danger">En attente </span>
                               <span [hidden]="!epsilon?.entretien" class="badge badge-warning">Entretien fait et validé </span>
-                            </p>
-                            <div class="btn-group">
+                              </p>
+                            </div>
+                            <div class="btn-group" [hidden]="!isAdmin">
                               <button  class="btn btn-outline-dark" (click)="onEditUser(epsilon)"><i class="fas fa-edit"></i></button>
                               <button type="button" class="btn btn-outline-danger" aria-label="Delete user" (click)="onDeleteUser(epsilon)"> <i class="fas fa-trash"></i></button>
                               <button class="btn btn-outline-dark" (click)="onSelectUser(epsilon)" ><i class="fas fa-eye"></i></button>
@@ -182,6 +185,15 @@
                                   <div class="form-group">
                                     <label>Email</label>
                                     <input type="text" name="email" required [(ngModel)]="user.email"
+                                      class="form-control">
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col">
+                                  <div class="form-group">
+                                    <label>Telephone</label>
+                                    <input type="text" name="telephone" required [(ngModel)]="user.telephone"
                                       class="form-control">
                                   </div>
                                 </div>
@@ -476,8 +488,7 @@
                         class="form-check-input">
                         <small >Changer les resultats de l'entretien (En attente || Fait & validé)</small>
                     </label>
-                  </div>
-                  
+                  </div>        
                 </fieldset>
                 <button type="submit" style="display: none;" id="new-user-save"></button>
               </form>
