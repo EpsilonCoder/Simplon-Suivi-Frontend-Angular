@@ -36,6 +36,7 @@ export class UserComponent implements OnInit, OnDestroy {
   public fileStatus = new FileuploadStatus();
   user: any;
   response: any;
+  epsilon!: User[];
   constructor(private router: Router, private userService: UserService, private authenticationService: AuthenticationService,
     private notificationService: NotificationService) { }
 
@@ -47,10 +48,37 @@ export class UserComponent implements OnInit, OnDestroy {
     }
     this.user = this.authenticationService.getUserFromLocalCache();
     this.getUsersAlafabrique(true);
-    this.getUsersEnEntreprise(true)
-
+    this.getUsersEnEntreprise()
+    console.log(this.entreprise);
 
     this.getUsers(true);
+
+    var myChart = new Chart("myChart", {
+      type: 'polarArea',
+      data: {
+        labels: ['Apprenant a la fabrique', 'Apprenant en entreprise', 'Compte Active', 'Compte bloqué'],
+        datasets: [{
+          label: 'Statistique de l application',
+          data: [11, 16, 7, 3],
+          backgroundColor: [
+            'rgb(255, 99, 132)',
+            'rgb(75, 192, 192)',
+            'rgb(255, 205, 86)',
+            'rgb(201, 203, 207)'
+
+          ]
+        }]
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
+        }
+      }
+    });
 
 
   }
@@ -78,78 +106,29 @@ export class UserComponent implements OnInit, OnDestroy {
     )
   }
 
-  public getUsersEnEntreprise(showNotification: boolean): void {
-    var entreprise = 0
-    this.userService.getUsersEnEntreprise().subscribe(
-      (data: User[]) => {
-        this.users = data;
-        if (showNotification) {
-          entreprise = data.length;
-          var myChart = new Chart("myChart", {
-            type: 'polarArea',
-            data: {
-              labels: ['Apprenant a la fabrique', 'Apprenant en entreprise', 'Purple', 'green', 'Orange'],
-              datasets: [{
-                label: 'Statistique de l application',
-                data: [, entreprise, 7, 3, 14],
-                backgroundColor: [
-                  'rgb(255, 99, 132)',
-                  'rgb(75, 192, 192)',
-                  'rgb(255, 205, 86)',
-                  'rgb(201, 203, 207)',
-                  'rgb(54, 162, 235)'
-                ]
-              }]
-            },
-            options: {
-              scales: {
-                yAxes: [{
-                  ticks: {
-                    beginAtZero: true
-                  }
-                }]
-              }
-            }
-          });
-        }
+  public getUsersEnEntreprise(): number {
+    var entreprise = 0;
+    this.userService.getUsersEnEntreprise().subscribe
+      (data => {
+        this.epsilon = data;
+        var p = data.length;
+        entreprise += p;
+
       }
-    )
+      )
+    return entreprise;
   }
 
+  entreprise = this.getUsersEnEntreprise();
 
-  public getUsersAlafabrique(showNotification: boolean): void {
+
+  public getUsersAlafabrique(showNotification: boolean) {
     var nombre = 0
     this.userService.getUsersAlafabrique().subscribe(
       (data: User[]) => {
         this.users = data;
         if (showNotification) {
           nombre = data.length;
-          var myChart = new Chart("myChart", {
-            type: 'polarArea',
-            data: {
-              labels: ['Apprenant a la fabrique', 'Apprenant en entreprise', 'Purple', 'green', 'Orange'],
-              datasets: [{
-                label: 'Statistique de l application',
-                data: [nombre, 16, 7, 3, 14],
-                backgroundColor: [
-                  'rgb(255, 99, 132)',
-                  'rgb(75, 192, 192)',
-                  'rgb(255, 205, 86)',
-                  'rgb(201, 203, 207)',
-                  'rgb(54, 162, 235)'
-                ]
-              }]
-            },
-            options: {
-              scales: {
-                yAxes: [{
-                  ticks: {
-                    beginAtZero: true
-                  }
-                }]
-              }
-            }
-          });
 
         }
       }
@@ -225,6 +204,7 @@ export class UserComponent implements OnInit, OnDestroy {
       if (user.firstName.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1 ||
         // user.lastName.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1 ||
         user.username.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1 ||
+        user.telephone.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1 ||
         user.userId.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1) {
         results.push(user);
       }
@@ -254,6 +234,7 @@ export class UserComponent implements OnInit, OnDestroy {
           this.fileName = '';
           this.profileImage = null;
           this.sendNotification(NotificationType.SUCCESS, `${response.firstName} ${response.lastName} La mise a jour a été effectué avec succés`);
+          this.router.navigateByUrl('/')
         },
         (errorResponse: HttpErrorResponse) => {
           this.sendNotification(NotificationType.ERROR, errorResponse.error.message);
@@ -434,9 +415,3 @@ export class UserComponent implements OnInit, OnDestroy {
 
 
 }
-
-
-function nombre(nombre: any) {
-  throw new Error('Function not implemented.');
-}
-

@@ -22,7 +22,7 @@ export class UserService {
   }
 
   public getUsersEnEntreprise(): Observable<User[]> {
-    return this.http.get<User[]>(`${this.host}/user/Entreprise`);
+    return this.http.get<User[]>(`${this.host}/user/EnEntreprise`);
   }
 
   public addUser(formData: FormData): Observable<User> {
