@@ -35,8 +35,8 @@ export class UserComponent implements OnInit, OnDestroy {
   private currentUsername!: string;
   public fileStatus = new FileuploadStatus();
   user: any;
-  response: any;
-  epsilon!: User[];
+  fabrique: any;
+  eps!: User[];
   constructor(private router: Router, private userService: UserService, private authenticationService: AuthenticationService,
     private notificationService: NotificationService) { }
 
@@ -47,39 +47,43 @@ export class UserComponent implements OnInit, OnDestroy {
       this.router.navigateByUrl('/login');
     }
     this.user = this.authenticationService.getUserFromLocalCache();
-    this.getUsersAlafabrique(true);
-    this.getUsersEnEntreprise()
-    console.log(this.entreprise);
+
+    var p = this.userService.getUsersAlafabrique().subscribe(
+      data => {
+        this.fabrique = data
+        console.log(this.fabrique[0])
+        var myChart = new Chart("myChart", {
+          type: 'polarArea',
+          data: {
+            labels: ['Apprenant a la fabrique', 'Apprenant en entreprise', 'Compte Active', 'Compte bloqué'],
+            datasets: [{
+              label: 'Statistique de l application',
+              data: [this.fabrique[0], this.fabrique[1], this.fabrique[2], (this.fabrique[0] + this.fabrique[1]) - this.fabrique[2]],
+              backgroundColor: [
+                'rgb(255, 99, 132)',
+                'rgb(75, 192, 192)',
+                'rgb(255, 205, 86)',
+                'rgb(201, 203, 207)'
+              ]
+            }]
+          },
+          options: {
+            scales: {
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true
+                }
+              }]
+            }
+          }
+        });
+
+      }
+    );
+
+
 
     this.getUsers(true);
-
-    var myChart = new Chart("myChart", {
-      type: 'polarArea',
-      data: {
-        labels: ['Apprenant a la fabrique', 'Apprenant en entreprise', 'Compte Active', 'Compte bloqué'],
-        datasets: [{
-          label: 'Statistique de l application',
-          data: [11, 16, 7, 3],
-          backgroundColor: [
-            'rgb(255, 99, 132)',
-            'rgb(75, 192, 192)',
-            'rgb(255, 205, 86)',
-            'rgb(201, 203, 207)'
-
-          ]
-        }]
-      },
-      options: {
-        scales: {
-          yAxes: [{
-            ticks: {
-              beginAtZero: true
-            }
-          }]
-        }
-      }
-    });
-
 
   }
 
@@ -106,39 +110,8 @@ export class UserComponent implements OnInit, OnDestroy {
     )
   }
 
-  public getUsersEnEntreprise(): number {
-    var entreprise = 0;
-    this.userService.getUsersEnEntreprise().subscribe
-      (data => {
-        this.epsilon = data;
-        var p = data.length;
-        entreprise += p;
-
-      }
-      )
-    return entreprise;
-  }
-
-  entreprise = this.getUsersEnEntreprise();
 
 
-  public getUsersAlafabrique(showNotification: boolean) {
-    var nombre = 0
-    this.userService.getUsersAlafabrique().subscribe(
-      (data: User[]) => {
-        this.users = data;
-        if (showNotification) {
-          nombre = data.length;
-
-        }
-      }
-    )
-
-
-
-
-
-  }
 
   private sendNotification(notificationType: NotificationType, message: string): void {
     if (message) {

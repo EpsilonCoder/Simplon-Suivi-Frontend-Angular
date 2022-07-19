@@ -1,8 +1,5 @@
 <app-header></app-header>
 
-
-
-
 <section class="inner-page offset-3">
    <div class="container">
     <!-- na -->
@@ -425,13 +422,14 @@
                   <label for="authority">Role</label>
                   <select name="role" required ngModel="ROLE_USER" class="form-control">
                     <option value="ROLE_USER">Utilisateur</option>
-                    <option value="ROLE_HR">Suprviseur</option>
+                  <!--  <option value="ROLE_HR">Suprviseur</option>
                     <option value="ROLE_MANAGER">Formateur</option>
-                    <option value="ROLE_ADMIN">Administrateur</option>
+                    <option value="ROLE_ADMIN">Administrateur</option>-->
                     <option value="ROLE_SUPER_ADMIN">Super Administrateur</option>
                   </select>
                 </div>
 
+                
                 <div  class="form-group">
                   <label for="authority">Role</label>
                   <input type="text" name="role" required ngModel="USER" readonly class="form-control">
@@ -465,7 +463,7 @@
                     </label>
                   </div>
                 </fieldset>
-
+                <!--
                 <fieldset class="form-group">
                   <div class="form-check">
                     <label class="form-check-label">
@@ -489,7 +487,7 @@
                         <small >Changer les resultats de l'entretien (En attente || Fait & validé)</small>
                     </label>
                   </div>        
-                </fieldset>
+                </fieldset>-->
                 <button type="submit" style="display: none;" id="new-user-save"></button>
               </form>
             </div>
