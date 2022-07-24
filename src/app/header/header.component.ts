@@ -32,11 +32,6 @@ export class HeaderComponent implements OnInit {
   constructor(private router: Router, private authenticationService: AuthenticationService) { }
 
   ngOnInit(): void {
-    if (this.authenticationService.isUserLoggedIn()) {
-      this.router.navigateByUrl('/user/management');
-    } else {
-      this.router.navigateByUrl('/login');
-    }
 
     this.user = this.authenticationService.getUserFromLocalCache();
 

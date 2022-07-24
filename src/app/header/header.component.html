@@ -29,8 +29,8 @@
                 <span>Mon Profile</span> 
               </a>
             </li>
-            <li [hidden]="!isAdmin"><a><i class="bx bx-book-content"></i>Gestion des promotions</a></li>
-            <li [hidden]="!isAdmin"><a><i class="bx bx-envelope"></i>Gestion des entreprises</a></li>
+            <li [hidden]="!isAdmin"><a routerLink="/promotion"><i class="bx bx-book-content"></i>Gestion des promotions</a></li>
+            <li [hidden]="!isAdmin" ><a routerLink="/entreprise"><i class="bx bx-envelope"></i>Gestion des entreprises</a></li>
             <li><a routerLink="/annonce"><i class="fa fa-bell" aria-hidden="true"></i>Annonces & Opportunités</a></li>
         </ul>
     </nav>

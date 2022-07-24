@@ -18,8 +18,6 @@ import { UserService } from '../service/user.service';
   selector: 'app-user',
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.css'],
-
-
 })
 export class UserComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
@@ -53,12 +51,12 @@ export class UserComponent implements OnInit, OnDestroy {
         this.fabrique = data
         console.log(this.fabrique[0])
         var myChart = new Chart("myChart", {
-          type: 'polarArea',
+          type: 'doughnut',
           data: {
             labels: ['Apprenant a la fabrique', 'Apprenant en entreprise', 'Compte Active', 'Compte bloqué'],
             datasets: [{
               label: 'Statistique de l application',
-              data: [this.fabrique[0], this.fabrique[1], this.fabrique[2], (this.fabrique[0] + this.fabrique[1]) - this.fabrique[2]],
+              data: [this.fabrique[1], this.fabrique[0], this.fabrique[2], (this.fabrique[0] + this.fabrique[1]) - this.fabrique[2]],
               backgroundColor: [
                 'rgb(255, 99, 132)',
                 'rgb(75, 192, 192)',
@@ -78,8 +76,62 @@ export class UserComponent implements OnInit, OnDestroy {
           }
         });
 
+        var myChart = new Chart("myChart1", {
+          type: 'polarArea',
+          data: {
+            labels: ['Apprenant a la fabrique', 'Apprenant en entreprise', 'Compte Active', 'Compte bloqué'],
+            datasets: [{
+              label: 'Statistique de l application',
+              data: [this.fabrique[1], this.fabrique[0], this.fabrique[2], (this.fabrique[0] + this.fabrique[1]) - this.fabrique[2]],
+              backgroundColor: [
+                'rgb(255, 99, 132)',
+                'rgb(75, 192, 192)',
+                'rgb(255, 205, 86)',
+                'rgb(201, 203, 207)'
+              ]
+            }]
+          },
+          options: {
+            scales: {
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true
+                }
+              }]
+            }
+          }
+        });
+
+
+        var myChart = new Chart("myChart2", {
+          type: 'bar',
+          data: {
+            labels: ['Apprenant a la fabrique', 'Apprenant en entreprise', 'Compte Active', 'Compte bloqué'],
+            datasets: [{
+              label: 'Statistique de l application',
+              data: [this.fabrique[1], this.fabrique[0], this.fabrique[2], (this.fabrique[0] + this.fabrique[1]) - this.fabrique[2]],
+              backgroundColor: [
+                'rgb(255, 99, 132)',
+                'rgb(75, 192, 192)',
+                'rgb(255, 205, 86)',
+                'rgb(201, 203, 207)'
+              ]
+            }]
+          },
+          options: {
+            scales: {
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true
+                }
+              }]
+            }
+          }
+        });
       }
     );
+
+
 
 
 
@@ -175,7 +227,7 @@ export class UserComponent implements OnInit, OnDestroy {
     const results: User[] = [];
     for (const user of this.userService.getUsersFromLocalCache() || []) {
       if (user.firstName.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1 ||
-        // user.lastName.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1 ||
+        user.lastName.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1 ||
         user.username.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1 ||
         user.telephone.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1 ||
         user.userId.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1) {
