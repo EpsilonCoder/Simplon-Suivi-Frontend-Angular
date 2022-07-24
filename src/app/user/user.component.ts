@@ -102,7 +102,6 @@ export class UserComponent implements OnInit, OnDestroy {
           }
         });
 
-
         var myChart = new Chart("myChart2", {
           type: 'bar',
           data: {
