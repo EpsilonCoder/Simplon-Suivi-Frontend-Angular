@@ -205,7 +205,7 @@
                               <div class="row">
                                 <div class="col mb-3">
                                   <div class="form-group">
-                                    <label>Permission</label><small>(Lecture seulement)</small>
+                                    <label>Permission</label>
                                     <select name="role" required [(ngModel)]="user.role"  class="form-control">
                                         <option  value="ROLE_USER">Apprenant</option>
                                         <option [hidden]="!isAdmin" value="ROLE_HR"></option>
@@ -231,7 +231,7 @@
                                     <div class="custom-control custom-checkbox">
                                       <input name="notLocked" type="checkbox"
                                         [(ngModel)]="user.isNotLocked" class="custom-control-input">
-                                      <label class="custom-control-label">Debloquer</label>
+                                      <label class="custom-control-label">Débloquer</label>
                                     </div>
                                   </div>
                                 </div>

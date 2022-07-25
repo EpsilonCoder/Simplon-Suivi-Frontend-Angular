@@ -1,9 +1,10 @@
 export class Promo {
-
+    public id: any;
     public libelle: string;
 
     constructor() {
-        this.libelle = '';
+        this.id = '',
+            this.libelle = '';
     }
 
 }

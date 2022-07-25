@@ -28,7 +28,7 @@
                 <td>{{eps.libelle}}</td>
                 <td>
                 <button  class="btn btn-outline-dark"><i class="fas fa-edit"></i></button>
-                <button type="button" class="btn btn-outline-danger" > <i class="fas fa-trash"></i></button>
+                <button type="button" class="btn btn-outline-danger" (click)="onDeletePromo(eps)"> <i class="fas fa-trash"></i></button>
                </td>
               </tr>
             </tbody>
@@ -43,7 +43,7 @@ role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 <div class="modal-dialog" role="document">
   <div class="modal-content">
     <div class="modal-header">
-      <h5 class="modal-title text-center">Modifier</h5>
+      <h5 class="modal-title text-center">Ajouter une nouvelle promotion</h5>
       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
