@@ -1,3 +1,8 @@
+<div style="padding-top:5%;
+width:100vw;
+height:100vh;
+background-image:repeating-linear-gradient(135deg, white 0px, #CE0033 2px, transparent 2px, transparent 4px), linear-gradient(45deg,white, rgb(238, 238, 238));
+place-items:center;"> <br><br><br>
 <div class="container">
   <div class="d-flex justify-content-center h-50">
       <div class="user_card">
@@ -12,7 +17,7 @@
                       <div class="input-group-append">
                           <span class="input-group-text"><i class="fas fa-user"></i></span>
                       </div>
-                      <input type="text" ngModel class="form-control" name="username" placeholder="Username"
+                      <input type="text" ngModel class="form-control" name="username" placeholder="Nom d'utilisateur"
                       #usernameInput="ngModel" ngModel required>
                   </div>
                   <span class="help-block text-danger" *ngIf="usernameInput.invalid && usernameInput.touched" >
@@ -22,7 +27,7 @@
                       <div class="input-group-append">
                           <span class="input-group-text"><i class="fas fa-key"></i></span>
                       </div>
-                      <input  #passwordInput="ngModel" ngModel type="password" class="form-control" name="password" placeholder="Password" required>
+                      <input  #passwordInput="ngModel" ngModel type="password" class="form-control" name="password" placeholder="Mot de passe" required>
                   </div>
                   <span class="help-block text-danger" *ngIf="passwordInput.invalid && passwordInput.touched">
                      Entrer votre mot de passe s'il vous plait
@@ -43,4 +48,4 @@
           </div>
       </div>
   </div>
-</div>
+</div></div>

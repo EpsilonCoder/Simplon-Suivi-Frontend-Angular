@@ -4,7 +4,7 @@
    <div class="container">
 
 
-    <!-- component -->
+<!-- component -->
 <div id="services" class="section relative pt-20 pb-8 md:pt-16 md:pb-0 bg-white">
     <div class="container xl:max-w-6xl mx-auto px-4">
 
@@ -27,7 +27,9 @@
                 <td>{{eps.id}}</td>
                 <td>{{eps.libelle}}</td>
                 <td>
-                <button  class="btn btn-outline-dark"><i class="fas fa-edit"></i></button>
+                <!-- 
+                <button  class="btn btn-outline-dark" data-toggle="modal" (click)="onEditPromo(eps)" data-target="#modiferPromoModal"><i class="fas fa-edit" ></i></button>
+                -->
                 <button type="button" class="btn btn-outline-danger" (click)="onDeletePromo(eps)"> <i class="fas fa-trash"></i></button>
                </td>
               </tr>
@@ -50,18 +52,80 @@ role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     </div>
     <div class="modal-body">
       <div class="">
-        <form #promoForm="ngForm"  (ngSubmit)="onAddNewPromo(promoForm)">
+        <form #promoForm="ngForm"  (ngSubmit)="onAddNewPromo(promoForm.value)">
           <div class="form-group">
             <label for="libelle">libelle</label>
-            <input type="text" name="libelle" required class="form-control">
+            <input type="text" ngModel name="libelle" #libelleInput="ngModel" required class="form-control">
           </div>
           <button type="submit" style="display: none;" id="new-promo-save"></button>
         </form>
       </div>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-dark" data-dismiss="modal" id="closeEditUserModalButton">Fermer</button>
-      <button type="button" (click)="saveNewPromo()" class="btn btn-dark">Enregister les modifications</button>
+      <button type="button" class="btn btn-dark" data-dismiss="modal" id="closePromoModalButton">Fermer</button>
+      <button type="button" [disabled]="promoForm.invalid " (click)="saveNewPromo()" class="btn btn-dark">Enregister les modifications</button>
+    </div>
+  </div>
+</div>
+</div>
+
+
+
+<div class="modal draggable fade bd-example-modal-lg" id="modifierPromoModal" tabindex="-1"
+role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title text-center">Ajouter une nouvelle promotion</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="">
+        <form #promoForm="ngForm"  (ngSubmit)="onAddNewPromo(promoForm.value)">
+          <div class="form-group">
+            <label for="libelle">libelle</label>
+            <input type="text" ngModel name="libelle" #libelleInput="ngModel" required class="form-control">
+          </div>
+          <button type="submit" style="display: none;" id="new-promo-save"></button>
+        </form>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-dark" data-dismiss="modal" id="closePromoModalButton">Fermer</button>
+      <button type="button" [disabled]="promoForm.invalid " (click)="saveNewPromo()" class="btn btn-dark">Enregister les modifications</button>
+    </div>
+  </div>
+</div>
+</div>
+
+
+
+<div class="modal draggable fade bd-example-modal-lg" id="modiferPromoModal" tabindex="-1"
+role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title text-center">Modifier une promotion</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="">
+        <form #promoForm="ngForm">
+          <div class="form-group">
+            <label for="libelle">libelle</label>
+            <input type="text"   [(ngModel)]="editPromo.libelle" name="libelle" required class="form-control">
+          </div>
+          <button type="submit" style="display: none;" id="new-promo-save"></button>
+        </form>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-dark" data-dismiss="modal" id="closePromoModalButton">Fermer</button>
+      <button type="button" (click)="onUpdatePromo(promoForm.value)" class="btn btn-dark">Enregister les modifications</button>
     </div>
   </div>
 </div>

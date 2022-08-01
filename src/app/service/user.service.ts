@@ -82,23 +82,23 @@ export class UserService {
 
 
   public addPromo(formData: FormData): Observable<Promo> {
-    return this.http.post<Promo>(`${this.host}/promoes`, formData);
+    return this.http.post<any>(`${this.host}/promoes`, formData);
   }
   public getPromo(): Observable<Promo[]> {
     return this.http.get<Promo[]>(`${this.host}/promoes`);
   }
 
   public updatePromo(formData: FormData): Observable<Promo> {
-    return this.http.put<Promo>(`${this.host}/promoes`, formData);
+    return this.http.post<any>(`${this.host}/promoes`, formData);
   }
 
   public deletePromo(id: number): Observable<CustomHttpResponse> {
     return this.http.delete<CustomHttpResponse>(`${this.host}/promoes/${id}`);
   }
 
-  createPromoFromData(id: any, promo: Promo): FormData {
+  createPromoFromData(id: number, promo: Promo): FormData {
     const formData = new FormData();
-    formData.append('currentId', promo.id);
+    formData.append('id', promo.id);
     formData.append('libelle', promo.libelle);
     return formData;
   }
