@@ -160,6 +160,7 @@ export class UserService {
     formData.append('nomPersonneContat', entreprise.nomPersonneContat);
     formData.append('prenomPersonneContact', entreprise.prenomPersonneContact);
     formData.append('telephone', entreprise.telephone);
+    formData.append('email', entreprise.email);
     return formData;
   }
 

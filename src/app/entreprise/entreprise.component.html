@@ -39,6 +39,8 @@ role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <input type="text" ngModel name="nomPersonneContat" #libelleInput="ngModel" required class="form-control">
             <label for="telephone">Téléphone</label>
             <input type="text" ngModel name="telephone" #libelleInput="ngModel" required class="form-control">
+            <label for="telephone">Email</label>
+            <input type="email" ngModel name="email" #emailInput="ngModel" required class="form-control">
           </div>
           <button type="submit" style="display: none;" id="new-promo-save"></button>
         </form>
@@ -61,6 +63,7 @@ role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
           <th>Prenom-Personne-Contact</th>
           <th>Nom-Personne-COntact</th>
           <th>Téléphone</th>
+          <th>Email</th>
           <th>Action</th>
       </tr>
   </thead>
@@ -71,6 +74,7 @@ role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
           <td> {{entreprise.prenomPersonneContact}} </td>
           <td> {{entreprise.nomPersonneContat}} </td>
           <td> {{entreprise.telephone}} </td>
+          <td> {{entreprise.email}}</td>
           <td (click)="onDeleteEntreprise(entreprise)">
             <button type="button" class="btn btn-outline-danger"> <i class="fas fa-trash"></i></button>
           </td>      

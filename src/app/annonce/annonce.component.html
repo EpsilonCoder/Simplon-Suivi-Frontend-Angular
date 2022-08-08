@@ -21,7 +21,7 @@
     </button>
     <br><br>
   
-    <div id="services" class="section relative pt-20 pb-8 md:pt-16 md:pb-0 bg-white">
+    <div id="services" class="section relative pb-8 md:pb-0 bg-white">
         <div class="container xl:max-w-6xl mx-auto px-4">
             <!-- row -->
             <div class="flex flex-wrap flex-row -mx-4 text-center">
@@ -31,9 +31,11 @@
                             <img src="assets/recrutement.png" alt="photo d'offre d'emploie">
                         </div>
                         <h3 class="text-lg leading-normal mb-2 font-semibold text-black"> {{eps.libelle}} </h3>
-                        <p class="text-gray-500"> {{eps.description}}</p>
+                        <p>
+                          <span  class="badge badge-success">Cible :{{eps.cible}}</span>      
+                        </p>
+                        <p class="text-gray-500"> {{eps.description}} </p>
                         <a class="btn btn-danger"  type="button" href="{{eps?.lien}}">Postuler</a><br><br>
-
                         <div class="btn-group" [hidden]="!isAdmin">
                             <button  class="btn btn-outline-dark" ><i class="fas fa-edit"></i></button>
                             <button type="button" class="btn btn-outline-danger" (click)="onDeleteAnnonce(eps)" aria-label="Delete user" > <i class="fas fa-trash"></i></button>
