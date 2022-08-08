@@ -21,6 +21,7 @@
     "@auth0/angular-jwt": "^5.0.2",
     "angular-notifier": "^11.0.0",
     "chart.js": "^2.9.4",
+    "datatables.net-dt": "^1.12.1",
     "rxjs": "~7.5.0",
     "subsink": "^1.0.2",
     "sweetalert2": "^11.4.20",

@@ -10,6 +10,7 @@ import { NotificationType } from '../enum/notification-type.enum';
 import { Role } from '../enum/role.enum';
 import { CustomHttpResponse } from '../model/custom-http-response';
 import { FileuploadStatus } from '../model/file-upload.status';
+import { Promo } from '../model/promo';
 import { User } from '../model/user';
 import { AuthenticationService } from '../service/authentication.service';
 import { NotificationService } from '../service/notification.service';
@@ -26,7 +27,7 @@ export class UserComponent implements OnInit, OnDestroy {
   public users!: User[];
   public refreshing: boolean | undefined;
   private subcriptions: Subscription[] = [];
-  selectedUser: User | undefined;
+  selectedUser: User | any;
   fileName: string | undefined;
   public profileImage!: File | any;
   public editUser = new User();
@@ -35,6 +36,7 @@ export class UserComponent implements OnInit, OnDestroy {
   user: any;
   fabrique: any;
   eps!: User[];
+  promo: any;
   constructor(private router: Router, private userService: UserService, private authenticationService: AuthenticationService,
     private notificationService: NotificationService) { }
 
@@ -162,6 +164,17 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
 
+  public getPromo(showNotification: boolean): void {
+    this.userService.getPromo()
+      .subscribe
+      ((data: Promo[]) => {
+        this.promo = data;
+      }, err => {
+        // this.sendNotification(NotificationType.ERROR, `Une erreur c est produit lors de l ajout de votre promotion`);
+      })
+  }
+
+
 
 
   private sendNotification(notificationType: NotificationType, message: string): void {
@@ -177,7 +190,6 @@ export class UserComponent implements OnInit, OnDestroy {
   public onSelectUser(selectedUser: User): void {
 
     this.selectedUser = selectedUser;
-    this.clickButton('openUserInfo');
 
   }
 
@@ -290,7 +302,8 @@ export class UserComponent implements OnInit, OnDestroy {
               )
             }
           });
-          this.sendNotification(NotificationType.SUCCESS, "L'utilisateur a bien été supprimée");
+          this.router.navigateByUrl('/user/management')
+          //this.sendNotification(NotificationType.SUCCESS, "L'utilisateur a bien été supprimée");
           this.getUsers(false);
         },
         (error: HttpErrorResponse) => {
@@ -299,6 +312,7 @@ export class UserComponent implements OnInit, OnDestroy {
       )
     );
   }
+
 
 
   public onResetPassword(emailForm: NgForm): void {

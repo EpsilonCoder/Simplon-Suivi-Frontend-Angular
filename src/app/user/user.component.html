@@ -5,7 +5,7 @@
     <!-- na -->
     <!--la liste de nos utilisateurs -->
     <!-- nav bar -->
-<nav class="navbar navbar-expand-md breadcrumb text-white bg-dark" [hidden]="!isAdmin">
+<nav class="navbar navbar-expand-md breadcrumb text-white " style="background:#CE0033;" [hidden]="!isAdmin">
   <div class="collapse navbar-collapse" id="navbarCollapse">
     <div class="nav nav-pills">
       <a class="nav-item nav-link  active ml-1"  style="color:white;" data-toggle="tab" href="#users">
@@ -17,13 +17,13 @@
         Parametrage
       </a>
       <a class="nav-item nav-link move-right mr-3" style="color:white;" data-toggle="tab" href="#profile">
-        Profile {{user?.firstName}}
         <i class="fa fa-user"></i>
+        Profile {{user?.firstName}}
       </a>
 
       <a class="nav-item nav-link move-right mr-3" style="color:white;" data-toggle="tab" href="#statistiques">
+        <i class='bx bx-bar-chart-alt-2'></i>
         Statistiques
-        <i class="bx bx-chart"></i>
       </a>
     </div>
   </div>
@@ -43,6 +43,77 @@
         </div>
 
       </div>
+     <!--========================Les details de l'apprenant====================================-->
+
+
+      <div class="tab-pane fade show" id="details">
+          
+        <div class="row shadow" style="border:1px solid grey;border-radius:20px; width:99%;" >
+          <div class="col-lg-4" data-aos="fade-right">
+            <img src="{{selectedUser?.profileImageUrl}}" class="img-fluid" alt="" style="border-radius:20px;">
+            <br>
+            <a type="button"   class="btn btn-outline-dark"  href="/">
+              <i class='bx bx-left-arrow-alt'></i>     
+            </a>
+          </div>
+          <div class="col-lg-8 pt-4 pt-lg-0 content" data-aos="fade-left">
+            <h3>Détail &amp; {{selectedUser?.firstName}} {{selectedUser?.lastName}} </h3>
+            <div class="row">
+              <div class="col-lg-6">
+                <ul>
+                 
+                  <li style="color:black;"><i class="bi bi-chevron-right"></i> <strong>Dernière connexion:</strong> <span>{{ selectedUser?.lastLoginDate | date:'medium'}}</span></li>
+                  <li style="color:black;"><i class="bi bi-chevron-right"></i> <strong>Téléphone:</strong> <span> {{selectedUser?.telephone}} </span></li>
+                  <li style="color:black;"><i class="bi bi-chevron-right"></i> <strong>Date de creation compte:</strong> <span>{{ selectedUser?.joinDate | date:'medium'}}</span></li>
+                  <li style="color:black;"><i class="bi bi-chevron-right"></i> <strong>Situation:</strong> 
+                    <span [hidden]="selectedUser?.entretien" class="badge badge-danger">En attente de reponse || opportunité </span>
+                    <span [hidden]="!selectedUser?.entretien" class="badge badge-warning">Entretien fait et validé </span>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-lg-6">
+                <ul>
+                   <li style="color:black;"><i class="bi bi-chevron-right"></i> <strong>Email:</strong> <span>sowcheikh086@gmail.com</span></li>
+                   <li style="color:black;"><i class="bi bi-chevron-right"></i> <strong>Situation:</strong>
+                    <span [hidden]="!selectedUser?.isNotLocked"> 
+                      <i class="fa fa-lock float-right" style="color: red;">
+                      </i>
+                      Compte bloqué
+                    </span>
+                    <span [hidden]="selectedUser?.isNotLocked" style="color:black;">
+                      <i class="fa fa-unlock float-right" style="color: green;">
+                      </i>
+                      Compte Actif
+                    </span>
+                  </li>
+
+                  <li style="color:black;"><i class="bi bi-chevron-right"></i> <strong>Numéro d'identifiant : </strong>
+                    {{selectedUser?.userId}}
+                  </li>
+
+                  <li style="color:black;"><i class="bi bi-chevron-right"></i> <strong>Est actuellement : </strong>
+                    <span  [hidden]="selectedUser?.situations" class="badge badge-warning">A la fabrique</span>
+                    <span  [hidden]="!selectedUser?.situations" class="badge badge-info">En Entreprise  <button class="btn btn-outline-dark" ><i class="fas fa-eye"></i></button></span><br>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <p>
+              
+            </p>
+            <div class="btn-group" [hidden]="!isAdmin">
+              <button  class="btn btn-outline-dark" (click)="onEditUser(selectedUser)"><i class="fas fa-edit">Modifier</i></button>
+              <button type="button" class="btn btn-outline-danger" aria-label="Delete user" (click)="onDeleteUser(selectedUser)"> <i class="fas fa-trash">Supprimer</i></button>
+            </div>
+            <br>
+          </div>
+        </div>
+
+      </div>
+
+
+
+      
 
 
       
@@ -74,33 +145,30 @@
             <div class="container xl:max-w-6xl mx-auto px-4">
                 <!-- la carte des apprenants  -->
                 <div class="flex flex-wrap flex-row -mx-4 text-center">
-                    <div class="flex-shrink px-4 max-w-full w-full sm:w-1/2 lg:w-1/3 lg:px-6 wow fadeInUp" data-wow-duration="1s" style="visibility: visible; animation-duration: 1s; animation-name: fadeInUp;" *ngFor="let epsilon of users">
+                    <div class="flex-shrink px-4 max-w-full w-full sm:w-1/2 lg:w-1/3 lg:px-6 wow fadeInUp" data-wow-duration="1s" style="visibility: visible; animation-duration: 1s; animation-name: fadeInUp; " *ngFor="let epsilon of users">
                         <!-- affichage des apprenants -->
-                        <div class="py-8 px-12 mb-12 bg-gray-50 border-b border-gray-100 transform transition duration-300 ease-in-out hover:-translate-y-2" style="border-radius:20px ;">
+                        <div class="py-8 px-12 mb-12 bg-white-50 shadow border-b border-gray-100 transform transition duration-300 ease-in-out hover:-translate-y-2" style="border-radius:20px ;width:300px; height:400px;">
                             <div class="inline-block text-gray-900 mb-4">
                                 <!-- image -->
                                 <img height="100" width="100" src="{{epsilon?.profileImageUrl}}" class="img-thumbnail" style="border-radius:90px; width:90px; height:90px;" alt=""/><br>
-                                <p>
-                                <span [hidden]="!epsilon?.active" class="badge badge-success">Active</span>
-                                <span [hidden]="epsilon?.active" class="badge badge-danger">bloqué</span> </p><br>
                             </div>
-                            <h3 class="text-lg leading-normal mb-2 font-semibold text-black">{{epsilon?.firstName}}  {{epsilon?.lastName}}</h3>
-                            <div class="text-gray-500">Email : {{epsilon?.email}} <br>Téléphone :{{epsilon?.telephone}} <br> Numéro Compte : {{epsilon?.userId}} 
+                            <h3 class="text-lg leading-normal mb-2 font-semibold text-black">{{epsilon?.firstName}} {{epsilon?.lastName}}</h3>
+                            <p>
+                              <span [hidden]="!epsilon?.active" class="badge badge-success">Active</span>
+                              <span [hidden]="epsilon?.active" class="badge badge-danger">bloqué</span> 
+                            </p>
+                            <div class="text-gray-500">
+                              <p>
+                              Email : {{epsilon?.email}} <br> Téléphone :{{epsilon?.telephone}}
+                              </p> 
                              <br> 
-                              <p [hidden]="!isAdmin">
-                               Est :
-                              <span  [hidden]="epsilon?.situations" class="badge badge-warning">A la fabrique</span>
-                              <span  [hidden]="!epsilon?.situations" class="badge badge-info">En Entreprise  <button class="btn btn-outline-dark" (click)="onSelectUser(epsilon)" ><i class="fas fa-eye"></i></button></span><br>
-                              Situation :
-                              <span [hidden]="epsilon?.entretien" class="badge badge-danger">En attente </span>
-                              <span [hidden]="!epsilon?.entretien" class="badge badge-warning">Entretien fait et validé </span>
-                              </p>
                             </div>
-                            <div class="btn-group" [hidden]="!isAdmin">
-                              <button  class="btn btn-outline-dark" (click)="onEditUser(epsilon)"><i class="fas fa-edit"></i></button>
-                              <button type="button" class="btn btn-outline-danger" aria-label="Delete user" (click)="onDeleteUser(epsilon)"> <i class="fas fa-trash"></i></button>
-                              <button class="btn btn-outline-dark" (click)="onSelectUser(epsilon)" ><i class="fas fa-eye"></i></button>
-                            </div>
+
+                            <button class="btn btn-outline-dark" (click)="onSelectUser(epsilon)"  data-toggle="tab" href="#details">
+                              details
+                              <i class="bx bx-chart"></i>
+                            </button>
+                           
                         </div>
                         <!-- affichage des apprenants -->
                     </div>
@@ -126,6 +194,12 @@
                         <div class="mx-auto" style="width: 120px;">
                           <div class="d-flex justify-content-center align-items-center rounded">
                             <img class="rounded" [(ngModel)]="user.profileImageUrl" height="135" width="135" src="{{user?.profileImageUrl}}" alt="">
+                          </div>
+                          <div *ngIf="fileStatus?.status==='progress'"  class="progress mt-1">
+                            <div class="progress-bar bg-info" role="progressbar"
+                            [style.width.%]="fileStatus.percentage"
+                               aria-valuenow="0" aria-valuemin="0"
+                              aria-valuemax="100">{{fileStatus.percentage}}%</div>
                           </div>
                         </div>
                       </div>
@@ -271,13 +345,10 @@
       </div>
     </div>
   </div>
-
-
         <button style="visibility:hidden ;" type="button" id="openUserInfo" data-toggle="modal" data-target="#viewUserModal">
         </button>
         <button style="visibility:hidden ;" type="button" id="openUserEdit" data-toggle="modal" data-target="#editUserModal">
         </button>
-
         <!-- Changer de mot de passe  -->
     <div  class="tab-pane fade" id="reset-password" [hidden]="!isAdmin">
         <form #resetPasswordForm="ngForm" (ngSubmit)="onResetPassword(resetPasswordForm)">
@@ -297,9 +368,9 @@
           </fieldset>
         </form>
     </div>
-    
+ 
       <!--Les information s'affichant sous forme de popup modal-->
-      <div class="modal fade bd-example-modal-lg" id="viewUserModal" tabindex="-1" role="dialog" aria-labelledby=""
+      <div class="modal fade bd-example-modal-lg" id="viewUserModal" tabindex="2" role="dialog" aria-labelledby=""
         aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
@@ -344,16 +415,20 @@
                   <ul class="list-group list-group-flush" >
                     <li class="list-group-item"></li>
                     <li class="list-group-item" style="color:black;"><i class="fa fa-id-badge float-right"></i>
-                        {{ selectedUser?.userId}}
+                       Identifiant : {{ selectedUser?.userId}}
                     </li>
                     <li class="list-group-item" style="color:black;"><i class="fa fa-envelope float-right"></i>
-                        {{ selectedUser?.email}}
+                       Email : {{ selectedUser?.email}}
                     </li>
+
+                    <li class="list-group-item" style="color:black;"><i class="fa fa-envelope float-right"></i>
+                      Téléphone : {{ selectedUser?.telephone}}
+                  </li>
                     <li class="list-group-item" style="color:black;"><i class="fas fa-shield-alt float-right"></i>
-                        {{ selectedUser?.role?.substring(5)}}
+                      Role  :{{ selectedUser?.role?.substring(5)}}
                     </li>
                     <li style="color:black;" *ngIf="selectedUser?.lastLoginDateDisplay" class="list-group-item"><i class="fas fa-sign-in-alt float-right"></i>
-                        {{ selectedUser?.lastLoginDateDisplay | date:'medium'}}
+                       Derniere connexion: {{ selectedUser?.lastLoginDateDisplay | date:'medium'}}
                     </li>
                     <li class="list-group-item" style="color:black;">
                       <span [hidden]="!selectedUser?.isNotLocked"> 
@@ -367,6 +442,16 @@
                         Compte Activé
                       </span>
                     </li>
+                    <li style="color:black;"  class="list-group-item"><i class="fas fa-sign-in-alt float-right"></i>
+                      Est actuellement :
+                      <span  [hidden]="selectedUser?.situations" class="badge badge-warning">A la fabrique</span>
+                      <span  [hidden]="!selectedUser?.situations" class="badge badge-info">En Entreprise  <button class="btn btn-outline-dark" ><i class="fas fa-eye"></i></button></span><br>
+                   </li>
+                   <li style="color:black;"  class="list-group-item"><i class="fas fa-sign-in-alt float-right"></i>
+                    Situation :
+                    <span [hidden]="selectedUser?.entretien" class="badge badge-danger">En attente </span>
+                    <span [hidden]="!selectedUser?.entretien" class="badge badge-warning">Entretien fait et validé </span>
+                   </li>
                   </ul>
                 </div>
               </div>
@@ -418,6 +503,7 @@
                   <label for="telephone">Téléphone</label>
                   <input type="telephone" name="telephone" required ngModel class="form-control">
                 </div>
+                
 
                 <div class="form-group" [hidden]="!isAdmin">
                   <label for="authority">Role</label>
@@ -503,15 +589,14 @@
       
     </div>
   </div>
-
     <!-- modal pour modifier -->
 <div class="modal draggable fade bd-example-modal-lg" id="editUserModal" tabindex="-1"
 role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 <div class="modal-dialog" role="document">
   <div class="modal-content">
     <div class="modal-header">
-      <h5 class="modal-title text-center">Modifier {{editUser?.firstName}}
-        {{editUser?.lastName}}</h5>
+      <h5 class="modal-title text-center">Modifier {{editUser.firstName}}
+        {{editUser.lastName}}</h5>
       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
@@ -636,89 +721,12 @@ role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     </form>
   </div>
   
-      <!-- les informations de l apprenants -->
-  <div class="modal fade bd-example-modal-lg" id="viewUserModal" tabindex="-1" role="dialog" aria-labelledby=""
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title text-center" id="exampleModalLongTitle">{{selectedUser?.firstName}}
-                {{selectedUser?.lastName}}
-              </h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <div>
-                <div class="card">
-                  <div class="card-body">
-                    <div class="row">
-                      <div class="col-12 col-sm-auto">
-                        <div class="mx-auto" style="width: 120px;">
-                          <div class="d-flex justify-content-center align-items-center rounded">
-                            <img class="rounded" height="120" width="120" src="{{selectedUser?.profileImageUrl}}" alt="{{selectedUser?.firstName}}">
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col d-flex flex-column flex-sm-row justify-content-between">
-                        <div class="text-center text-sm-left mb-sm-0">
-                          <h6 class="pt-sm-2 pb-1 mb-0 text-nowrap">{{selectedUser?.firstName}}
-                            {{selectedUser?.lastName}}</h6>
-                          <p class="mb-1">{{selectedUser?.username}}</p>
-                          <div class="">Status:
-                            <span [hidden]="!selectedUser?.active" class="badge badge-success">Active</span>
-                            <span [hidden]="selectedUser?.active" class="badge badge-danger">Inactive</span>
-                          </div>
-                          <div *ngIf="selectedUser?.lastLoginDateDisplay" class="text-muted"><small>Last Login: {{selectedUser?.lastLoginDateDisplay | date: 'medium'}}</small>
-                          </div>
-                        </div>
-                        <div class="text-center text-sm-right">
-                          <div class="text-muted"><small>Joined {{selectedUser?.joinDate | date: 'mediumDate'}}</small></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <ul class="list-group list-group-flush">
-                    <li class="list-group-item"></li>
-                    <li class="list-group-item"><i class="fa fa-id-badge float-right"></i>{{selectedUser?.userId}}
-                    </li>
-                    <li class="list-group-item"><i class="fa fa-envelope float-right"></i>{{selectedUser?.email}}
-                    </li>
-                    <li class="list-group-item"><i class="fas fa-shield-alt float-right"></i>{{selectedUser?.role}}
-                    <li *ngIf="selectedUser?.lastLoginDateDisplay" class="list-group-item"><i
-                        class="fas fa-sign-in-alt float-right"></i>{{selectedUser?.lastLoginDateDisplay | date: 'medium'}}
-                    </li>
-                    <li class="list-group-item">
-                      <span >
-                        <i class="fa fa-lock float-right" style="color: red;">
-                        </i>
-                        Account Locked
-                      </span>
-                      <span >
-                        <i class="fa fa-unlock float-right" style="color: green;">
-                        </i>
-                        Account Unlocked
-                      </span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-          </div>
-        </div>
-  </div>
-
-
    <!-- Formulaire de changement de notre photo de profile -->
    <form enctype="multipart/form-data" style="display:none;">
     <input type="file"
       (change)="onProfileImageChange($event); onUpdateProfileImage()"
      name="profile-image-input" id="profile-image-input" placeholder="file" accept="image/*" />
-</form>
+   </form>
 </section> 
 
 

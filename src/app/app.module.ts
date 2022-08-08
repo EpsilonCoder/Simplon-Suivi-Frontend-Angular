@@ -26,7 +26,7 @@ import { EntrepriseComponent } from './entreprise/entreprise.component';
     FooterComponent,
     PromotionComponent,
     AnnonceComponent,
-    EntrepriseComponent,
+    EntrepriseComponent
   ],
   imports: [
     BrowserModule,

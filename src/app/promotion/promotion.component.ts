@@ -40,13 +40,14 @@ export class PromotionComponent implements OnInit {
       this.notificationService.notify(notificationType, 'Une erreur c est produit veuillez réessayer , s il vou plait');
     }
   }
+
   public getPromo(showNotification: boolean): void {
     this.userService.getPromo()
       .subscribe
       ((data: Promo[]) => {
         this.promo = data;
       }, err => {
-        this.sendNotification(NotificationType.ERROR, `Une erreur c est produit lors de l ajout de votre promotion`);
+        // this.sendNotification(NotificationType.ERROR, `Une erreur c est produit lors de l ajout de votre promotion`);
       })
   }
 

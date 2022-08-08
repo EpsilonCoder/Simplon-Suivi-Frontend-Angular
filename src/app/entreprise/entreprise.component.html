@@ -1,4 +1,84 @@
 <app-header></app-header>
+<section class="inner-page offset-3">
+    <div class="container">
 
+    <nav style="border-radius:20px;" class="navbar navbar-expand-md breadcrumb text-white " style="background:#CE0033;">
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+              <div class="nav nav-pills">
+                <a class="nav-item nav-link  ml-1"  style="color:white; font-size:larger;">
+                  <i class="fa fa-bell"></i>
+                   ENTREPRISE PARTENAIRE
+                </a>
+              </div>
+            </div>
+    </nav>
+     
+    <button  type="button" class="btn btn-dark" data-toggle="modal" data-target="#ajoutPromoModal">
+        <i class="fa fa-plus"></i>Ajouter un utilisateur
+    </button>
+    <br><br>
+    <div class="modal draggable fade bd-example-modal-lg" id="ajoutPromoModal" tabindex="-1"
+role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title text-center">Ajouter une nouvelle entreprise partenaire</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="">
+        <form #entrepriseForm="ngForm"  (ngSubmit)="onAddNewEntreprise(entrepriseForm.value)">
+          <div class="form-group">
+            <label for="raisonSocial">Raison Social</label>
+            <input type="text" ngModel name="raisonSocial" #libelleInput="ngModel" required class="form-control">
+            <label for="prenomPersonneContact">Prénom personne contact </label>
+            <input type="text" ngModel name="prenomPersonneContact" #libelleInput="ngModel" required class="form-control">
+            <label for="nomPersonneContat">Nom personne</label>
+            <input type="text" ngModel name="nomPersonneContat" #libelleInput="ngModel" required class="form-control">
+            <label for="telephone">Téléphone</label>
+            <input type="text" ngModel name="telephone" #libelleInput="ngModel" required class="form-control">
+          </div>
+          <button type="submit" style="display: none;" id="new-promo-save"></button>
+        </form>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-dark" data-dismiss="modal" id="closePromoModalButton">Fermer</button>
+      <button type="button" [disabled]="entrepriseForm.invalid " (click)="saveNewAnnonce()" class="btn btn-dark">Enregister les modifications</button>
+    </div>
+  </div>
+</div>
+</div>
+
+
+
+<table id="example" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+  <thead>
+      <tr>
+          <th>Entreprise</th>
+          <th>Prenom-Personne-Contact</th>
+          <th>Nom-Personne-COntact</th>
+          <th>Téléphone</th>
+          <th>Action</th>
+      </tr>
+  </thead>
+  <tbody>
+  
+      <tr *ngFor="let entreprise of entreprise._embedded.entrepriseAcceuils">
+          <td> {{entreprise.raisonSocial}} </td>
+          <td> {{entreprise.prenomPersonneContact}} </td>
+          <td> {{entreprise.nomPersonneContat}} </td>
+          <td> {{entreprise.telephone}} </td>
+          <td (click)="onDeleteEntreprise(entreprise)">
+            <button type="button" class="btn btn-outline-danger"> <i class="fas fa-trash"></i></button>
+          </td>      
+      </tr>
+    
+   </tbody>
+   </table>
+    </div>
+    </section>
 
 <app-footer></app-footer>

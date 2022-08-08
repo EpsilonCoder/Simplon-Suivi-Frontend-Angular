@@ -1,3 +1,5 @@
+import { Promo } from "./promo";
+
 export class User {
 
     public userId: string;
@@ -16,6 +18,7 @@ export class User {
     public entretien: boolean;
     public role: string;
     public authorities: [];
+    public promo!: Promo;
 
     constructor() {
         this.userId = '';

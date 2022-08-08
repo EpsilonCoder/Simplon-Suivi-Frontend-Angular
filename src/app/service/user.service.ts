@@ -5,6 +5,8 @@ import { User } from '../model/user';
 import { environment } from 'src/environments/environment';
 import { CustomHttpResponse } from '../model/custom-http-response';
 import { Promo } from '../model/promo';
+import { Annonce } from '../model/annonce';
+import { entreprise } from '../model/entreprise';
 
 
 @Injectable({ providedIn: 'root' })
@@ -103,8 +105,63 @@ export class UserService {
     return formData;
   }
 
+  /**
+  * Service pour la  gestion des annonces 
+  * **/
+  public addAnnonce(formData: FormData): Observable<Annonce> {
+    return this.http.post<any>(`${this.host}/annonces`, formData);
+  }
 
+  public getAnnonce(): Observable<Annonce[]> {
+    return this.http.get<Annonce[]>(`${this.host}/annonces`);
+  }
 
+  public updateAnnonce(formData: FormData): Observable<Annonce> {
+    return this.http.post<any>(`${this.host}/annonces`, formData);
+  }
+
+  public deleteAnnonce(id: number): Observable<CustomHttpResponse> {
+    return this.http.delete<CustomHttpResponse>(`${this.host}/annonces/${id}`);
+  }
+
+  createAnnonceFromData(id: number, annonce: Annonce): FormData {
+    const formData = new FormData();
+    formData.append('id', annonce.id);
+    formData.append('description', annonce.description);
+    formData.append('libelle', annonce.libelle);
+    formData.append('lien', annonce.lien);
+    formData.append('cible', annonce.cible);
+    return formData;
+  }
+
+  /** 
+  * Service pour la  gestion des entreprises
+  **/
+  public addentreprise(formData: FormData): Observable<entreprise> {
+    return this.http.post<any>(`${this.host}/entrepriseAcceuils`, formData);
+  }
+
+  public getEntreprise(): Observable<entreprise[]> {
+    return this.http.get<entreprise[]>(`${this.host}/entrepriseAcceuils`);
+  }
+
+  public updateEntreprise(formData: FormData): Observable<entreprise> {
+    return this.http.post<any>(`${this.host}/entrepriseAcceuils`, formData);
+  }
+
+  public deleteEntreprise(id: number): Observable<CustomHttpResponse> {
+    return this.http.delete<CustomHttpResponse>(`${this.host}/entrepriseAcceuils/${id}`);
+  }
+
+  createEntrepriseFromData(id: number, entreprise: entreprise): FormData {
+    const formData = new FormData();
+    formData.append('id', entreprise.id);
+    formData.append('raisonSocial', entreprise.raisonSocial);
+    formData.append('nomPersonneContat', entreprise.nomPersonneContat);
+    formData.append('prenomPersonneContact', entreprise.prenomPersonneContact);
+    formData.append('telephone', entreprise.telephone);
+    return formData;
+  }
 
 
 }

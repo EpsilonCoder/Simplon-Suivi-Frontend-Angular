@@ -64,7 +64,7 @@ h6 {
   z-index: 9997;
   transition: all 0.5s;
   padding: 0 15px;
-  background: black;
+  background: #CE0033;
   overflow-y: auto;
 }
 
@@ -196,7 +196,7 @@ li {
 }
 
 .mobile-nav-toggle i {
-  color: #149ddd;
+  color: #CE0033;
 }
 
 .mobile-nav-active {
@@ -929,7 +929,8 @@ section {
 --------------------------------------------------------------*/
 .breadcrumbs {
   padding: 20px 0;
-  background: #b8b5b5;
+  background: rgb(234, 234, 234);
+  box-shadow: 10px 5px 5px rgb(192, 187, 187);
 }
 
 .breadcrumbs h2 {
