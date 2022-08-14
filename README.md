@@ -16,6 +16,11 @@ C’est un framework de développement Java. C'est une déclinaison du framework
 **Simplicité de prise en main** : Spring Boot permet donc de créer une API de services très simplement. Il suffit d'embarquer directement le serveur d'application dans un seul et unique Jar qui est exécutable, par exemple, directement dans un service de conteneur (exemple : Amazon web service, dans un App Service sur Microsoft Azure, dans un conteneur Docker ou autre).
 <hr>
 
+**Angular**
+Son principal intérêt est de rendre l'expérience utilisateur sur les applications web et mobiles beaucoup plus agréables. La navigation est fluidifiée grâce notamment à la synchronisation bidirectionnelle spécifique à ce framework. Les allers-retours entre le serveur et le navigateur sont considérablement réduits.
+
+<br><hr>
+
 ## Présentation de la solution
 **Interface Administrateur**
 <img src="https://github.com/EpsilonCoder/E-Suivi-diagramme/blob/main/presentation-solution.gif?raw=true" width="100%"/>
