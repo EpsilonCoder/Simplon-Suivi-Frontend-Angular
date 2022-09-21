@@ -79,15 +79,15 @@ export class UserService {
 
   /**
    * Service pour la  gestion des promotions
-   * 
+   *
    * **/
 
 
   public addPromo(formData: FormData): Observable<Promo> {
-    return this.http.post<any>(`${this.host}/promoes`, formData);
+    return this.http.post<any>(`${this.host}/addPromo`, formData);
   }
   public getPromo(): Observable<Promo[]> {
-    return this.http.get<Promo[]>(`${this.host}/promoes`);
+    return this.http.get<Promo[]>(`${this.host}/getPromo`);
   }
 
   public updatePromo(formData: FormData): Observable<Promo> {
@@ -95,7 +95,7 @@ export class UserService {
   }
 
   public deletePromo(id: number): Observable<CustomHttpResponse> {
-    return this.http.delete<CustomHttpResponse>(`${this.host}/promoes/${id}`);
+    return this.http.delete<CustomHttpResponse>(`${this.host}/deletePromo/${id}`);
   }
 
   createPromoFromData(id: number, promo: Promo): FormData {
@@ -106,14 +106,14 @@ export class UserService {
   }
 
   /**
-  * Service pour la  gestion des annonces 
+  * Service pour la  gestion des annonces
   * **/
   public addAnnonce(formData: FormData): Observable<Annonce> {
-    return this.http.post<any>(`${this.host}/annonces`, formData);
+    return this.http.post<any>(`${this.host}/addAnnonce`, formData);
   }
 
   public getAnnonce(): Observable<Annonce[]> {
-    return this.http.get<Annonce[]>(`${this.host}/annonces`);
+    return this.http.get<Annonce[]>(`${this.host}/getAnnonce`);
   }
 
   public updateAnnonce(formData: FormData): Observable<Annonce> {
@@ -121,7 +121,7 @@ export class UserService {
   }
 
   public deleteAnnonce(id: number): Observable<CustomHttpResponse> {
-    return this.http.delete<CustomHttpResponse>(`${this.host}/annonces/${id}`);
+    return this.http.delete<CustomHttpResponse>(`${this.host}/deleteAnnonce/${id}`);
   }
 
   createAnnonceFromData(id: number, annonce: Annonce): FormData {
@@ -134,23 +134,23 @@ export class UserService {
     return formData;
   }
 
-  /** 
+  /**
   * Service pour la  gestion des entreprises
   **/
   public addentreprise(formData: FormData): Observable<entreprise> {
-    return this.http.post<any>(`${this.host}/entrepriseAcceuils`, formData);
+    return this.http.post<any>(`${this.host}/addEntreprise`, formData);
   }
 
   public getEntreprise(): Observable<entreprise[]> {
-    return this.http.get<entreprise[]>(`${this.host}/entrepriseAcceuils`);
+    return this.http.get<entreprise[]>(`${this.host}/getEntreprise`);
   }
 
   public updateEntreprise(formData: FormData): Observable<entreprise> {
-    return this.http.post<any>(`${this.host}/entrepriseAcceuils`, formData);
+    return this.http.post<any>(`${this.host}/entrepriseAcceuil`, formData);
   }
 
   public deleteEntreprise(id: number): Observable<CustomHttpResponse> {
-    return this.http.delete<CustomHttpResponse>(`${this.host}/entrepriseAcceuils/${id}`);
+    return this.http.delete<CustomHttpResponse>(`${this.host}/deleteEntreprise/${id}`);
   }
 
   createEntrepriseFromData(id: number, entreprise: entreprise): FormData {

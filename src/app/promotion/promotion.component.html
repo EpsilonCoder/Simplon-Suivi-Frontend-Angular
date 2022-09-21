@@ -11,7 +11,7 @@
             <i class="fa fa-plus"></i>Ajouter un utilisateur
         </button>
         <br><br>
-        
+
         <table class="table table-hover col-md-6">
             <thead class="bg-dark text-white ">
               <tr>
@@ -21,11 +21,11 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let eps of promo._embedded.promoes">
+              <tr *ngFor="let eps of promo">
                 <td>{{eps.id}}</td>
                 <td>{{eps.libelle}}</td>
                 <td>
-                <!-- 
+                <!--
                 <button  class="btn btn-outline-dark" data-toggle="modal" (click)="onEditPromo(eps)" data-target="#modiferPromoModal"><i class="fas fa-edit" ></i></button>
                 -->
                 <button type="button" class="btn btn-outline-danger" (click)="onDeletePromo(eps)"> <i class="fas fa-trash"></i></button>

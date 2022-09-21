@@ -12,7 +12,7 @@
               </div>
             </div>
     </nav>
-     
+
     <button  type="button" class="btn btn-dark" data-toggle="modal" data-target="#ajoutPromoModal">
         <i class="fa fa-plus"></i>Ajouter un utilisateur
     </button>
@@ -68,8 +68,8 @@ role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
       </tr>
   </thead>
   <tbody>
-  
-      <tr *ngFor="let entreprise of entreprise._embedded.entrepriseAcceuils">
+
+      <tr *ngFor="let entreprise of entreprise">
           <td> {{entreprise.raisonSocial}} </td>
           <td> {{entreprise.prenomPersonneContact}} </td>
           <td> {{entreprise.nomPersonneContat}} </td>
@@ -77,9 +77,9 @@ role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
           <td> {{entreprise.email}}</td>
           <td (click)="onDeleteEntreprise(entreprise)">
             <button type="button" class="btn btn-outline-danger"> <i class="fas fa-trash"></i></button>
-          </td>      
+          </td>
       </tr>
-    
+
    </tbody>
    </table>
     </div>

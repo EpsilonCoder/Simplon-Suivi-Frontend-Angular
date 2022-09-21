@@ -15,24 +15,24 @@
               </div>
             </div>
     </nav>
-     
+
     <button  type="button" class="btn btn-dark" data-toggle="modal" data-target="#ajoutPromoModal">
         <i class="fa fa-plus"></i>Ajouter une annonce
     </button>
     <br><br>
-  
+
     <div id="services" class="section relative pb-8 md:pb-0 bg-white">
         <div class="container xl:max-w-6xl mx-auto px-4">
             <!-- row -->
             <div class="flex flex-wrap flex-row -mx-4 text-center">
-                <div class="flex-shrink px-4 max-w-full w-full sm:w-1/2 lg:w-1/3 lg:px-6 wow fadeInUp" data-wow-duration="1s" data-wow-delay=".3s" style="visibility: visible; animation-duration: 1s; animation-delay: 0.3s; animation-name: fadeInUp;" *ngFor="let eps of annonce._embedded.annonces">
+                <div class="flex-shrink px-4 max-w-full w-full sm:w-1/2 lg:w-1/3 lg:px-6 wow fadeInUp" data-wow-duration="1s" data-wow-delay=".3s" style="visibility: visible; animation-duration: 1s; animation-delay: 0.3s; animation-name: fadeInUp;" *ngFor="let eps of annonce">
                     <div class="py-8 px-12 mb-12 shadow bg-white-50 border-b border-gray-100 transform transition duration-300 ease-in-out hover:-translate-y-2" style="border-radius:20px;">
-                        <div class="inline-block text-gray-900 mb-4">        
+                        <div class="inline-block text-gray-900 mb-4">
                             <img src="assets/recrutement.png" alt="photo d'offre d'emploie">
                         </div>
                         <h3 class="text-lg leading-normal mb-2 font-semibold text-black"> {{eps.libelle}} </h3>
                         <p>
-                          <span  class="badge badge-success">Cible :{{eps.cible}}</span>      
+                          <span  class="badge badge-success">Cible :{{eps.cible}}</span>
                         </p>
                         <p class="text-gray-500"> {{eps.description}} </p>
                         <a class="btn btn-danger"  type="button" href="{{eps?.lien}}">Postuler</a><br><br>
@@ -42,7 +42,7 @@
                         </div>
                     </div>
                     <!-- end service block -->
-                </div>    
+                </div>
             </div>
             <!-- end row -->
         </div>
@@ -72,7 +72,7 @@ role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <label for="libelle">lien</label>
             <input type="text" ngModel name="lien" placeholder="exemple :https://recurtement.atos.sn" #descriptionInput="ngModel" required class="form-control">
             <label for="libelle">cible</label>
-            <select name="cible"  #cibleInput="ngModel" ngModel class="form-control"> 
+            <select name="cible"  #cibleInput="ngModel" ngModel class="form-control">
                 <option value="developpeur">Développeur</option>
                 <option value="Référent Digital">Référent Digital</option>
                 <option value="ADEFIPA">ADEFIPA</option>
