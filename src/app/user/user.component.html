@@ -39,21 +39,19 @@
           <div class="col"><canvas id="myChart1"></canvas></div>
           <div class="w-100"></div>
           <div class="col"><canvas id="myChart"></canvas></div>
-          <div class="col">Column</div>
         </div>
 
       </div>
      <!--========================Les details de l'apprenant====================================-->
 
-
       <div class="tab-pane fade show" id="details">
-          
+
         <div class="row shadow" style="border:1px solid grey;border-radius:20px; width:99%;" >
           <div class="col-lg-4" data-aos="fade-right">
             <img src="{{selectedUser?.profileImageUrl}}" class="img-fluid" alt="" style="border-radius:20px;">
             <br>
             <a type="button"   class="btn btn-outline-dark"  href="/">
-              <i class='bx bx-left-arrow-alt'></i>     
+              <i class='bx bx-left-arrow-alt'></i>
             </a>
           </div>
           <div class="col-lg-8 pt-4 pt-lg-0 content" data-aos="fade-left">
@@ -61,11 +59,11 @@
             <div class="row">
               <div class="col-lg-6">
                 <ul>
-                 
+
                   <li style="color:black;"><i class="bi bi-chevron-right"></i> <strong>Dernière connexion:</strong> <span>{{ selectedUser?.lastLoginDate | date:'medium'}}</span></li>
                   <li style="color:black;"><i class="bi bi-chevron-right"></i> <strong>Téléphone:</strong> <span> {{selectedUser?.telephone}} </span></li>
                   <li style="color:black;"><i class="bi bi-chevron-right"></i> <strong>Date de creation compte:</strong> <span>{{ selectedUser?.joinDate | date:'medium'}}</span></li>
-                  <li style="color:black;"><i class="bi bi-chevron-right"></i> <strong>Situation:</strong> 
+                  <li style="color:black;"><i class="bi bi-chevron-right"></i> <strong>Situation:</strong>
                     <span [hidden]="selectedUser?.entretien" class="badge badge-danger">En attente de reponse || opportunité </span>
                     <span [hidden]="!selectedUser?.entretien" class="badge badge-warning">Entretien fait et validé </span>
                   </li>
@@ -75,7 +73,7 @@
                 <ul>
                    <li style="color:black;"><i class="bi bi-chevron-right"></i> <strong>Email:</strong> <span>sowcheikh086@gmail.com</span></li>
                    <li style="color:black;"><i class="bi bi-chevron-right"></i> <strong>Situation:</strong>
-                    <span [hidden]="!selectedUser?.isNotLocked"> 
+                    <span [hidden]="!selectedUser?.isNotLocked">
                       <i class="fa fa-lock float-right" style="color: red;">
                       </i>
                       Compte bloqué
@@ -93,13 +91,22 @@
 
                   <li style="color:black;"><i class="bi bi-chevron-right"></i> <strong>Est actuellement : </strong>
                     <span  [hidden]="selectedUser?.situations" class="badge badge-warning">A la fabrique</span>
-                    <span  [hidden]="!selectedUser?.situations" class="badge badge-info">En Entreprise  <button class="btn btn-outline-dark" ><i class="fas fa-eye"></i></button></span><br>
+                    <span  [hidden]="!selectedUser?.situations" class="badge badge-info">En Entreprise  <button class="btn btn-outline-dark" ></button></span><br>
+                    <div class="card" style="width: 18rem;">
+                      <div class="card-body" >
+                        <h5 class="card-title">Entreprise d'acceuil</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">gogogog</h6>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <a href="#" class="card-link">Card link</a>
+                        <a href="#" class="card-link">Another link</a>
+                      </div>
+                    </div>
                   </li>
                 </ul>
               </div>
             </div>
             <p>
-              
+
             </p>
             <div class="btn-group" [hidden]="!isAdmin">
               <button  class="btn btn-outline-dark" (click)="onEditUser(selectedUser)"><i class="fas fa-edit">Modifier</i></button>
@@ -113,10 +120,10 @@
 
 
 
-      
 
 
-      
+
+
         <!-- user table -->
         <div class="tab-pane fade show active" id="users">
           <div class="mb-3 float-right">
@@ -135,11 +142,11 @@
               </button>
             </div>
           </div>
-          
+
           <table class="table table-hover">
-            
-            <!--Permettre l affichages du champs de recherche-->
-            
+
+           <!--Permettre l affichages du champs de recherche-->
+
           </table>
           <div id="services" class="section relative pt-20 pb-8 md:pt-16 md:pb-0 bg-white">
             <div class="container xl:max-w-6xl mx-auto px-4">
@@ -155,24 +162,24 @@
                             <h3 class="text-lg leading-normal mb-2 font-semibold text-black">{{epsilon?.firstName}} {{epsilon?.lastName}}</h3>
                             <p>
                               <span [hidden]="!epsilon?.active" class="badge badge-success">Active</span>
-                              <span [hidden]="epsilon?.active" class="badge badge-danger">bloqué</span> 
+                              <span [hidden]="epsilon?.active" class="badge badge-danger">bloqué</span>
                             </p>
                             <div class="text-gray-500">
                               <p>
                               Email : {{epsilon?.email}} <br> Téléphone :{{epsilon?.telephone}}
-                              </p> 
-                             <br> 
+                              </p>
+                             <br>
                             </div>
 
-                            <button class="btn btn-outline-dark" (click)="onSelectUser(epsilon)"  data-toggle="tab" href="#details">
+                            <button *ngIf="epsilon?.role?.length==9" class="btn btn-outline-dark" (click)="onSelectUser(epsilon)"  data-toggle="tab" href="#details">
                               details
                               <i class="bx bx-chart"></i>
                             </button>
-                           
+
                         </div>
                         <!-- affichage des apprenants -->
                     </div>
-                    
+
                 </div>
                 <!-- la carte des apprenants -->
             </div>
@@ -231,7 +238,7 @@
                                 <div class="col">
                                   <div class="form-group">
                                     <label>Prénom</label>
-                                    <input type="text" [(ngModel)]="user.firstName" name="firstName" required 
+                                    <input type="text" [(ngModel)]="user.firstName" name="firstName" required
                                       class="form-control">
                                   </div>
                                 </div>
@@ -247,7 +254,7 @@
                                 <div class="col">
                                   <div class="form-group">
                                     <label>Nom d'utilisateur</label>
-                                    <input type="text" name="username" [(ngModel)]="user.username" required 
+                                    <input type="text" name="username" [(ngModel)]="user.username" required
                                       class="form-control">
                                   </div>
                                 </div>
@@ -368,7 +375,7 @@
           </fieldset>
         </form>
     </div>
- 
+
       <!--Les information s'affichant sous forme de popup modal-->
       <div class="modal fade bd-example-modal-lg" id="viewUserModal" tabindex="2" role="dialog" aria-labelledby=""
         aria-hidden="true">
@@ -431,7 +438,7 @@
                        Derniere connexion: {{ selectedUser?.lastLoginDateDisplay | date:'medium'}}
                     </li>
                     <li class="list-group-item" style="color:black;">
-                      <span [hidden]="!selectedUser?.isNotLocked"> 
+                      <span [hidden]="!selectedUser?.isNotLocked">
                         <i class="fa fa-lock float-right" style="color: red;">
                         </i>
                         Compte bloqué
@@ -462,10 +469,10 @@
           </div>
         </div>
       </div>
-  
+
 
       <!--La vue pour ajouter  un utilisateur-->
-      
+
     <div  class="modal draggable fade bd-example-modal-lg" id="addUserModal" tabindex="-1" role="dialog"
       aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -488,7 +495,7 @@
                   <label for="lastName">Nom</label>
                   <input type="text"  name="lastName" required ngModel class="form-control">
                 </div>
-                
+
                 <div class="form-group">
                   <label for="username">Nom d'utilisateur</label>
                   <input type="text" name="username" required ngModel class="form-control">
@@ -503,7 +510,7 @@
                   <label for="telephone">Téléphone</label>
                   <input type="telephone" name="telephone" required ngModel class="form-control">
                 </div>
-                
+
 
                 <div class="form-group" [hidden]="!isAdmin">
                   <label for="authority">Role</label>
@@ -516,7 +523,7 @@
                   </select>
                 </div>
 
-                
+
                 <div  class="form-group">
                   <label for="authority">Role</label>
                   <input type="text" name="role" required ngModel="USER" readonly class="form-control">
@@ -546,7 +553,7 @@
                   <div class="form-check disabled">
                     <label class="form-check-label">
                       <input type="checkbox" name="notLocked" ngModel class="form-check-input">
-                      bloquer le compte 
+                      bloquer le compte
                     </label>
                   </div>
                 </fieldset>
@@ -561,11 +568,11 @@
                   <div class="form-check disabled">
                     <label class="form-check-label">
                       <input type="checkbox" name="situations" ngModel class="form-check-input">
-                      En entreprise 
+                      En entreprise
                     </label>
                   </div>
                 </fieldset>
-      
+
                 <fieldset class="form-group">
                   <div class="form-check 1">
                     <label class="form-check-label">
@@ -573,7 +580,7 @@
                         class="form-check-input">
                         <small >Changer les resultats de l'entretien (En attente || Fait & validé)</small>
                     </label>
-                  </div>        
+                  </div>
                 </fieldset>-->
                 <button type="submit" style="display: none;" id="new-user-save"></button>
               </form>
@@ -586,12 +593,12 @@
         </div>
       </div>
     </div>
-      
+
     </div>
   </div>
     <!-- modal pour modifier -->
 <div class="modal draggable fade bd-example-modal-lg" id="editUserModal" tabindex="-1"
-role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+   role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 <div class="modal-dialog" role="document">
   <div class="modal-content">
     <div class="modal-header">
@@ -630,6 +637,15 @@ role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <input type="telephone" name="telephone" required [(ngModel)]="editUser.telephone"
               class="form-control">
           </div>
+
+          <div class="form-group">
+            <label for="promo">Promotion</label>
+            <select class="form-control"  name="promo">
+              <option [ngValue]="null"></option>
+              <option [(ngModel)]="editUser.promo" *ngFor="let promo of promo" [ngValue]="promo">{{promo.libelle}}</option>
+            </select>
+          </div>
+
           <div class="form-group">
             <label for="authority">Role</label>
               <select name="role" required [(ngModel)]="editUser.role" class="form-control">
@@ -677,8 +693,15 @@ role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                   <small >Changer la situation de l'apprenant (Entreprise || A la fabrique)</small>
               </label>
             </div>
-            
           </fieldset>
+
+          <div class="form-group" *ngIf="editUser.situations">
+            <label for="entretien">Entreprise d'acceuil</label>
+              <select class="form-control" [(ngModel)]="editUser.entreprise"  name="entreprise">
+                <option [ngValue]="null"></option>
+                <option *ngFor="let entreprise of entreprise" [ngValue]="entreprise">{{entreprise.raisonSocial}}</option>
+              </select>
+          </div>
 
           <fieldset class="form-group">
             <div class="form-check 1">
@@ -688,7 +711,6 @@ role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                   <small >Changer les resultats de l'entretien (En attente || Fait & validé)</small>
               </label>
             </div>
-            
           </fieldset>
         </form>
       </div>
@@ -720,14 +742,14 @@ role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
       </fieldset>
     </form>
   </div>
-  
+
    <!-- Formulaire de changement de notre photo de profile -->
    <form enctype="multipart/form-data" style="display:none;">
     <input type="file"
       (change)="onProfileImageChange($event); onUpdateProfileImage()"
      name="profile-image-input" id="profile-image-input" placeholder="file" accept="image/*" />
    </form>
-</section> 
+</section>
 
 
 <app-footer></app-footer>

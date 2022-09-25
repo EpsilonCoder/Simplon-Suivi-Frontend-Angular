@@ -1,4 +1,4 @@
-export class entreprise {
+export class Entreprise {
     public id: any;
     public raisonSocial: string;
     public nomPersonneContat: string;

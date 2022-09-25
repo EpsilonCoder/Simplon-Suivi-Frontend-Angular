@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import { NotificationType } from '../enum/notification-type.enum';
 import { Role } from '../enum/role.enum';
 import { CustomHttpResponse } from '../model/custom-http-response';
+import { Entreprise } from '../model/entreprise';
 import { FileuploadStatus } from '../model/file-upload.status';
 import { Promo } from '../model/promo';
 import { User } from '../model/user';
@@ -37,6 +38,7 @@ export class UserComponent implements OnInit, OnDestroy {
   fabrique: any;
   eps!: User[];
   promo: any;
+  entreprise: Entreprise[] = [];
   constructor(private router: Router, private userService: UserService, private authenticationService: AuthenticationService,
     private notificationService: NotificationService) { }
 
@@ -133,15 +135,19 @@ export class UserComponent implements OnInit, OnDestroy {
     );
 
 
-
-
-
     this.getUsers(true);
+    this.getPromo(true);
+    this.getEntreprise(true);
 
   }
 
   public changeTitle(title: string): void {
     this.titleSubject.next(title);
+  }
+
+  public onChange(event:any): void {  //event will give you full breif of action
+    const newVal = event.target.value;
+    console.log(newVal);
   }
 
   public getUsers(showNotification: boolean): void {
@@ -163,6 +169,15 @@ export class UserComponent implements OnInit, OnDestroy {
     )
   }
 
+  public getEntreprise(showNotification: boolean): void {
+    this.userService.getEntreprise()
+      .subscribe
+      ((data: Entreprise[]) => {
+        this.entreprise = data;
+      }, err => {
+        this.sendNotification(NotificationType.ERROR, `Une erreur c est produit lors de l ajout de votre promotion`);
+      })
+  }
 
   public getPromo(showNotification: boolean): void {
     this.userService.getPromo()

@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { NotificationType } from '../enum/notification-type.enum';
 import { CustomHttpResponse } from '../model/custom-http-response';
-import { entreprise } from '../model/entreprise';
+import { Entreprise } from '../model/entreprise';
 import { AuthenticationService } from '../service/authentication.service';
 import { NotificationService } from '../service/notification.service';
 import { UserService } from '../service/user.service';
@@ -15,7 +15,7 @@ import { UserService } from '../service/user.service';
   styleUrls: ['./entreprise.component.css']
 })
 export class EntrepriseComponent implements OnInit {
-  entreprise: entreprise[] | any;
+  entreprise: Entreprise[] | any;
   subcriptions: any;
 
   constructor(private router: Router, public userService: UserService, private authenticationService: AuthenticationService,
@@ -25,14 +25,14 @@ export class EntrepriseComponent implements OnInit {
   public getEntreprise(showNotification: boolean): void {
     this.userService.getEntreprise()
       .subscribe
-      ((data: entreprise[]) => {
+      ((data: Entreprise[]) => {
         this.entreprise = data;
       }, err => {
         this.sendNotification(NotificationType.ERROR, `Une erreur c est produit lors de l ajout de votre promotion`);
       })
   }
 
-  public async onDeleteEntreprise(id: entreprise): Promise<void> {
+  public async onDeleteEntreprise(id: Entreprise): Promise<void> {
 
 
     this.userService.deleteEntreprise(id.id).subscribe(

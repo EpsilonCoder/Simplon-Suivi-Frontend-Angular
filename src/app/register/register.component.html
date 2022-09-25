@@ -20,7 +20,7 @@ place-items:center;"> <br><br><br>
               <input type="text" class="form-control" name="firstName" placeholder="Prénom" required ngModel #firstNameInput="ngModel">
             </div>
 
-            
+
             <span class="help-block" *ngIf="firstNameInput.invalid && firstNameInput.touched" style="color:red;">Entrez votre prenom</span>
             <div class="input-group mb-3">
               <div class="input-group-append">
@@ -48,7 +48,7 @@ place-items:center;"> <br><br><br>
             </div>
             <span class="help-block" *ngIf="emailInput.invalid && emailInput.touched" style="color:red;">Veuillez saisir votre email.</span>
 
-           
+
             <div class="input-group mb-2">
               <div class="input-group-append">
                 <span class="input-group-text"><i class="fas fa-envelope"></i></span>
@@ -56,6 +56,18 @@ place-items:center;"> <br><br><br>
               <input type="text" class="form-control" name="telephone" placeholder="telephone" required ngModel #telephoneInput="ngModel">
             </div>
             <span class="help-block" *ngIf="telephoneInput.invalid && telephoneInput.touched" style="color:red;">Entrez votre numero de téléphone</span>
+
+            <div class="input-group mb-2">
+              <div class="input-group-append">
+                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+              </div>
+             <select name="promo" class="form-control">
+                <option value="">----choisir votre promo----</option>
+                <option [(ngModel)]="promo"  *ngFor="let item of promo" [ngValue]="promo" >{{item.libelle}}</option>
+             </select>
+            </div>
+            <span class="help-block" *ngIf="telephoneInput.invalid && telephoneInput.touched" style="color:red;">Entrez votre numero de téléphone</span>
+
         <div class="d-flex justify-content-center mt-3 login_container">
             <button type="submit" [disabled]="registerForm.invalid || showLoading" name="button" class="btn login_btn" >
                 <i *ngIf="showLoading" class="fas fa-spinner fa-spin" ></i>&nbsp;&nbsp;

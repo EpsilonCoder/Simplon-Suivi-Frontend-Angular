@@ -1,3 +1,4 @@
+import { Entreprise } from './../model/entreprise';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse, HttpErrorResponse, HttpEvent } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -6,7 +7,6 @@ import { environment } from 'src/environments/environment';
 import { CustomHttpResponse } from '../model/custom-http-response';
 import { Promo } from '../model/promo';
 import { Annonce } from '../model/annonce';
-import { entreprise } from '../model/entreprise';
 
 
 @Injectable({ providedIn: 'root' })
@@ -67,6 +67,8 @@ export class UserService {
     formData.append('username', user.username);
     formData.append('email', user.email);
     formData.append('telephone', user.telephone);
+    formData.append('promo',JSON.stringify(user.promo?.id));
+    formData.append('entreprise',JSON.stringify(user.entreprise?.id));
     formData.append('role', user.role);
     formData.append('profileImage', profileImage);
     formData.append('isActive', JSON.stringify(user.active));
@@ -137,15 +139,15 @@ export class UserService {
   /**
   * Service pour la  gestion des entreprises
   **/
-  public addentreprise(formData: FormData): Observable<entreprise> {
+  public addentreprise(formData: FormData): Observable<Entreprise> {
     return this.http.post<any>(`${this.host}/addEntreprise`, formData);
   }
 
-  public getEntreprise(): Observable<entreprise[]> {
-    return this.http.get<entreprise[]>(`${this.host}/getEntreprise`);
+  public getEntreprise(): Observable<Entreprise[]> {
+    return this.http.get<Entreprise[]>(`${this.host}/getEntreprise`);
   }
 
-  public updateEntreprise(formData: FormData): Observable<entreprise> {
+  public updateEntreprise(formData: FormData): Observable<Entreprise> {
     return this.http.post<any>(`${this.host}/entrepriseAcceuil`, formData);
   }
 
@@ -153,7 +155,7 @@ export class UserService {
     return this.http.delete<CustomHttpResponse>(`${this.host}/deleteEntreprise/${id}`);
   }
 
-  createEntrepriseFromData(id: number, entreprise: entreprise): FormData {
+  createEntrepriseFromData(id: number, entreprise: Entreprise): FormData {
     const formData = new FormData();
     formData.append('id', entreprise.id);
     formData.append('raisonSocial', entreprise.raisonSocial);
