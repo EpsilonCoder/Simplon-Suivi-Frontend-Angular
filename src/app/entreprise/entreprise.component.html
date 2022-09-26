@@ -69,7 +69,7 @@ role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   </thead>
   <tbody>
 
-      <tr *ngFor="let entreprise of entreprise">
+      <tr *ngFor="let entreprise of entreprise" [hidden]="entreprise.telephone.length==5">
           <td> {{entreprise.raisonSocial}} </td>
           <td> {{entreprise.prenomPersonneContact}} </td>
           <td> {{entreprise.nomPersonneContat}} </td>

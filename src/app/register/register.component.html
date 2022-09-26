@@ -51,7 +51,7 @@ place-items:center;"> <br><br><br>
 
             <div class="input-group mb-2">
               <div class="input-group-append">
-                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                <span class="input-group-text"><i class="fas fa-id-badge"></i></span>
               </div>
               <input type="text" class="form-control" name="telephone" placeholder="telephone" required ngModel #telephoneInput="ngModel">
             </div>
@@ -59,11 +59,11 @@ place-items:center;"> <br><br><br>
 
             <div class="input-group mb-2">
               <div class="input-group-append">
-                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                <span class="input-group-text"><i class="fas fa-shield-alt"></i></span>
               </div>
              <select name="promo" class="form-control">
                 <option value="">----choisir votre promo----</option>
-                <option [(ngModel)]="promo"  *ngFor="let item of promo" [ngValue]="promo" >{{item.libelle}}</option>
+                <option *ngFor="let item of promo" [ngValue]="promo" >{{item.libelle}}</option>
              </select>
             </div>
             <span class="help-block" *ngIf="telephoneInput.invalid && telephoneInput.touched" style="color:red;">Entrez votre numero de téléphone</span>

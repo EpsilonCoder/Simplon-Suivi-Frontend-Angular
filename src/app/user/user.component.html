@@ -2,9 +2,6 @@
 
 <section class="inner-page offset-3">
    <div class="container">
-    <!-- na -->
-    <!--la liste de nos utilisateurs -->
-    <!-- nav bar -->
 <nav class="navbar navbar-expand-md breadcrumb text-white " style="background:#CE0033;" [hidden]="!isAdmin">
   <div class="collapse navbar-collapse" id="navbarCollapse">
     <div class="nav nav-pills">
@@ -36,9 +33,9 @@
 
         <div class="row">
           <div class="col"><canvas id="myChart2"></canvas></div>
-          <div class="col"><canvas id="myChart1"></canvas></div>
-          <div class="w-100"></div>
           <div class="col"><canvas id="myChart"></canvas></div>
+          <div class="w-100"></div>
+          <div class="col"><canvas id="myChart1"></canvas></div>
         </div>
 
       </div>
@@ -50,7 +47,7 @@
           <div class="col-lg-4" data-aos="fade-right">
             <img src="{{selectedUser?.profileImageUrl}}" class="img-fluid" alt="" style="border-radius:20px;">
             <br>
-            <a type="button"   class="btn btn-outline-dark"  href="/">
+            <a type="button"   class="btn btn-outline-dark"  href="/#">
               <i class='bx bx-left-arrow-alt'></i>
             </a>
           </div>
@@ -73,11 +70,8 @@
                 <ul>
                    <li style="color:black;"><i class="bi bi-chevron-right"></i> <strong>Email:</strong> <span>sowcheikh086@gmail.com</span></li>
                    <li style="color:black;"><i class="bi bi-chevron-right"></i> <strong>Situation:</strong>
-                    <span [hidden]="!selectedUser?.isNotLocked">
-                      <i class="fa fa-lock float-right" style="color: red;">
-                      </i>
-                      Compte bloqué
-                    </span>
+                    <span [hidden]="!selectedUser?.isNotLocked"><i class="fa fa-lock float-right" style="color: red;">
+                    </i>Compte bloqué</span>
                     <span [hidden]="selectedUser?.isNotLocked" style="color:black;">
                       <i class="fa fa-unlock float-right" style="color: green;">
                       </i>
@@ -92,13 +86,13 @@
                   <li style="color:black;"><i class="bi bi-chevron-right"></i> <strong>Est actuellement : </strong>
                     <span  [hidden]="selectedUser?.situations" class="badge badge-warning">A la fabrique</span>
                     <span  [hidden]="!selectedUser?.situations" class="badge badge-info">En Entreprise  <button class="btn btn-outline-dark" ></button></span><br>
-                    <div class="card" style="width: 18rem;">
-                      <div class="card-body" >
-                        <h5 class="card-title">Entreprise d'acceuil</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">gogogog</h6>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="#" class="card-link">Card link</a>
-                        <a href="#" class="card-link">Another link</a>
+                    <div class="card" style="width: 18rem;" *ngIf="selectedUser?.role?.length==9">
+                      <div class="card-body"*ngIf="selectedUser?.situations" >
+                        <h5 class="card-title">Entreprise :{{selectedUser.entrepriseAcceuil.raisonSocial}}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Email:{{selectedUser.entrepriseAcceuil.email}}</h6>
+                        <p class="card-text">Prénom & Nom :{{selectedUser.entrepriseAcceuil.prenomPersonneContact}}  {{selectedUser.entrepriseAcceuil.nomPersonneContat}}</p>
+                        <a href="#" class="card-link">Téléphone:{{selectedUser.entrepriseAcceuil.telephone}}</a><br>
+                        <a href="#" class="card-link">Retour</a>
                       </div>
                     </div>
                   </li>
@@ -277,20 +271,41 @@
                                   </div>
                                 </div>
                               </div>
+
+                              <div class="row" hidden>
+                                <div class="col">
+                                  <div class="form-group">
+                                    <label>Promotion</label>
+                                    <input type="text" name="promo" required [(ngModel)]="user.promo"
+                                      class="form-control">
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="row" hidden>
+                                <div class="col">
+                                  <div class="form-group">
+                                    <label>Entreprise d'acceuil</label>
+                                    <input type="text" name="entreprise" required [(ngModel)]="user.entrepriseAcceuil"
+                                      class="form-control">
+                                  </div>
+                                </div>
+                              </div>
+
                               <div class="row">
                                 <div class="col mb-3">
                                   <div class="form-group">
                                     <label>Permission</label>
                                     <select name="role" required [(ngModel)]="user.role"  class="form-control">
                                         <option  value="ROLE_USER">Apprenant</option>
-                                        <option [hidden]="!isAdmin" value="ROLE_HR"></option>
-                                        <option [hidden]="!isAdmin" value="ROLE_MANAGER">Formateur</option>
                                         <option [hidden]="!isAdmin" value="ROLE_ADMIN">Administrateur</option>
-                                        <option [hidden]="!isAdmin" value="ROLE_SUPER_ADMIN">Super Adiminstrateur</option>
-                                      </select>
+                                    </select>
                                   </div>
                                 </div>
                               </div>
+
+
+
                             </div>
                           </div>
                           <div class="row">
@@ -519,7 +534,7 @@
                   <!--  <option value="ROLE_HR">Suprviseur</option>
                     <option value="ROLE_MANAGER">Formateur</option>
                     <option value="ROLE_ADMIN">Administrateur</option>-->
-                    <option value="ROLE_SUPER_ADMIN">Super Administrateur</option>
+                    <option value="ROLE_SUPER_ADMIN">Administrateur</option>
                   </select>
                 </div>
 
@@ -638,11 +653,11 @@
               class="form-control">
           </div>
 
-          <div class="form-group">
+          <div class="form-group" hidden>
             <label for="promo">Promotion</label>
-            <select class="form-control"  name="promo">
+            <select class="form-control" (ngModelChange)="onChange($event)" name="promo">
               <option [ngValue]="null"></option>
-              <option [(ngModel)]="editUser.promo" *ngFor="let promo of promo" [ngValue]="promo">{{promo.libelle}}</option>
+              <option  *ngFor="let promo of promo" [ngValue]="promo">{{promo.libelle}}</option>
             </select>
           </div>
 

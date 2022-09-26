@@ -39,6 +39,7 @@ export class UserComponent implements OnInit, OnDestroy {
   eps!: User[];
   promo: any;
   entreprise: Entreprise[] = [];
+  entre: Entreprise[] = [];
   constructor(private router: Router, private userService: UserService, private authenticationService: AuthenticationService,
     private notificationService: NotificationService) { }
 
@@ -174,6 +175,17 @@ export class UserComponent implements OnInit, OnDestroy {
       .subscribe
       ((data: Entreprise[]) => {
         this.entreprise = data;
+      }, err => {
+        this.sendNotification(NotificationType.ERROR, `Une erreur c est produit lors de l ajout de votre promotion`);
+      })
+  }
+
+
+  public getEntrepriseA(showNotification: boolean): void {
+    this.userService.getEntreprise()
+      .subscribe
+      ((data: Entreprise[]) => {
+        this.entre = data;
       }, err => {
         this.sendNotification(NotificationType.ERROR, `Une erreur c est produit lors de l ajout de votre promotion`);
       })
@@ -317,7 +329,7 @@ export class UserComponent implements OnInit, OnDestroy {
               )
             }
           });
-          this.router.navigateByUrl('/user/management')
+          this.router.navigateByUrl('/#')
           //this.sendNotification(NotificationType.SUCCESS, "L'utilisateur a bien été supprimée");
           this.getUsers(false);
         },
