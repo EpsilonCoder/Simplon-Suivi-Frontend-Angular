@@ -67,6 +67,12 @@ place-items:center;"> <br><br><br>
               </select>
             </div>
             <span class="help-block" *ngIf="telephoneInput.invalid && telephoneInput.touched" style="color:red;">Entrez votre numero de téléphone</span>
+            <div class="input-group mb-2">
+              <div class="input-group-append">
+                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+              </div>
+              <input type="text" class="form-control" name="entreprise" value="7" required ngModel #entrepriseInput="ngModel">
+            </div>
 
         <div class="d-flex justify-content-center mt-3 login_container">
             <button type="submit" [disabled]="registerForm.invalid || showLoading" name="button" class="btn login_btn" >

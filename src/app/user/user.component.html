@@ -153,7 +153,8 @@
                                 <!-- image -->
                                 <img height="100" width="100" src="{{epsilon?.profileImageUrl}}" class="img-thumbnail" style="border-radius:90px; width:90px; height:90px;" alt=""/><br>
                             </div>
-                            <h3 class="text-lg leading-normal mb-2 font-semibold text-black">{{epsilon?.firstName}} {{epsilon?.lastName}}</h3>
+                            <h3 class="text-lg leading-normal mb-2 font-semibold text-black">{{epsilon?.firstName}} {{epsilon?.lastName}}
+                              <p hidden >{{epsilon?.promo?.libelle}}</p></h3>
                             <p>
                               <span [hidden]="!epsilon?.active" class="badge badge-success">Active</span>
                               <span [hidden]="epsilon?.active" class="badge badge-danger">bloqué</span>
@@ -670,9 +671,7 @@
             <label for="authority">Role</label>
               <select name="role" required [(ngModel)]="editUser.role" class="form-control">
                 <option value="ROLE_USER">apprenant</option>
-                <option value="ROLE_MANAGER">Formateur</option>
-                <option value="ROLE_ADMIN">Admininstrateur</option>
-                <option value="ROLE_SUPER_ADMIN">Super Administrateur</option>
+                <option value="ROLE_SUPER_ADMIN">Administrateur</option>
               </select>
           </div>
           <div class="input-group mb-2">
