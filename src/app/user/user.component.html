@@ -531,11 +531,16 @@
                   <label for="authority">Role</label>
                   <select name="role" required ngModel="ROLE_USER" class="form-control">
                     <option value="ROLE_USER">Utilisateur</option>
-                  <!--  <option value="ROLE_HR">Suprviseur</option>
-                    <option value="ROLE_MANAGER">Formateur</option>
-                    <option value="ROLE_ADMIN">Administrateur</option>-->
                     <option value="ROLE_SUPER_ADMIN">Administrateur</option>
                   </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="promo">Promotion</label>
+                 <select ngModel class="form-control" name="promo">
+                  <option [ngValue]="undefined">--- Selectionner votre promo ---</option>
+                  <option *ngFor="let eps of promo" [ngValue]="eps">{{ eps.libelle }}</option>
+                 </select>
                 </div>
 
 

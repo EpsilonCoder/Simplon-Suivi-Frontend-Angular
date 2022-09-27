@@ -61,10 +61,10 @@ place-items:center;"> <br><br><br>
               <div class="input-group-append">
                 <span class="input-group-text"><i class="fas fa-shield-alt"></i></span>
               </div>
-             <select name="promo" class="form-control">
-                <option value="">----choisir votre promo----</option>
-                <option *ngFor="let item of promo" [ngValue]="promo" >{{item.libelle}}</option>
-             </select>
+              <select ngModel class="form-control" name="promo">
+                <option [ngValue]="undefined">--- Selectionner votre promo ---</option>
+                <option *ngFor="let eps of promo" [ngValue]="eps">{{ eps.libelle }}</option>
+              </select>
             </div>
             <span class="help-block" *ngIf="telephoneInput.invalid && telephoneInput.touched" style="color:red;">Entrez votre numero de téléphone</span>
 
